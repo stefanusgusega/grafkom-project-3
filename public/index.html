@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/main.css">
+    <script id="shaderVs" type="x-shader/x-vertex">
+        precision mediump float;
+        attribute vec3 vertPosition;
+        attribute vec3 vertColor;
+        attribute vec3 vertNormal;
+        
+        varying vec3 fragColor;
+        varying highp vec3 vLighting;
+
+        uniform mat4 mWorld;
+        uniform mat4 mView;
+        uniform mat4 mProj;
+        uniform mat4 mNorm;
+
+
+        void main() {
+            fragColor = vertColor;
+            gl_Position = mProj * mView * mWorld * vec4(vertPosition, 1.0);
+
+            highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
+            highp vec3 directionalLightColor = vec3(1, 1, 1);
+            highp vec3 directionalVector = normalize(vec3(0.85, 0.8, 0.75));
+            highp vec4 transformedNormal = mNorm * vec4(vertNormal, 1);
+            highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
+            vLighting = ambientLight + (directionalLightColor * directional);
+        }
+    </script>
+    
+    <script id="shaderFs" type="x-shader/x-fragment">
+        precision mediump float;
+        varying vec3 fragColor;
+        varying highp vec3 vLighting;
+        uniform bool stateShade;
+
+        void main() {
+            if(stateShade == false){
+                gl_FragColor = vec4(fragColor * vec3(1, 1,1), 1.0);
+
+            }else{
+                //vLighting = ambientLight + (directionalLightColor * directional);
+                gl_FragColor = vec4(fragColor * vLighting, 1.0);
+            }
+        }
+    </script>
+    <script>
+        function help() {
+            var x = document.getElementById("helpText");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+    <script type="module" src="static/js/script.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <a id="download-link" style="display:none"></a>
+    <input style="display: none;" type="file" id="upload-btn" value="Select Files">
+    <div style="display:flex; flex-direction:row">
+        <div style="margin-right:5px;">
+            <canvas id="glCanvas" width="640" height="640"></canvas>
+        </div>
+        <div>
+            <div>
+                <button type="button" id="reset">Reset View</button>
+            </div>
+            <div>
+                <button type="button" id="ortho">Orthographic</button>
+                <button type="button" id="oblique">Oblique</button>
+                <button type="button" id="perspective">Perspective</button>
+            </div>
+            <div>
+                <button type="button" id="shade" value="On" >Shading</button>
+                <button type="button" id="save">Save</button>
+                <button type="button" id="load">Load</button>
+            </div>
+            <div>
+                <div>
+                    <label>Movement</label>
+                </div>
+                <input type="range" min="-10" max="10" value="0" class="slider" id="movex">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="movey">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="movez">
+            </div>
+            <div>
+                <div>
+                    <label>Eye</label>
+                </div>
+                <input type="range" min="-10" max="10" value="0" class="slider" id="eyex">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="eyey">
+                <input type="range" min="-10" max="10" value="-8" class="slider" id="eyez">
+            </div>
+            <div>
+                <div>
+                    <label>Center</label>
+                </div>
+                <input type="range" min="-10" max="10" value="0" class="slider" id="centerx">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="centery">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="centerz">
+            </div>
+            <div>
+                <div>
+                    <label>Up</label>
+                </div>
+                <input type="range" min="-10" max="10" value="0" class="slider" id="upx">
+                <input type="range" min="-10" max="10" value="1" class="slider" id="upy">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="upz">
+            </div>
+            <div>
+                <button onclick="help()">Help</button>
+                <textarea readonly id="helpText" style="display:none">
+Ini Help
+                </textarea>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
