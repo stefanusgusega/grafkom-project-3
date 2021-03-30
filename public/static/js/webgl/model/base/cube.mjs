@@ -94,3 +94,21 @@ export const indicesCube = new Uint16Array([
     20, 21, 22,
     20, 22, 23
 ]);
+
+export function changeColor(side, color, r, g, b) {
+    const position = ['top', 'right', 'left', 'back', 'front', 'bottom'];
+    var taken = 0;
+    for (var i = 0; i < position.length; ++i) {
+        if (side === position[i]) {
+            taken = i;
+            break
+        }
+    }
+    var copy = [...color]
+    for (var i = 0; i < 4; ++i) {
+        copy[i*3 + taken*24] = r;
+        copy[i*3 + taken*24 + 1] = g;
+        copy[i*3 + taken*24 + 2] = b;
+    }
+    return new Float32Array(copy);
+}

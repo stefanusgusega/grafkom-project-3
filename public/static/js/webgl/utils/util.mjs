@@ -126,6 +126,20 @@ export function arrToMat(a) {
     return m
 }
 
+export function vertToMatrix(vert) {
+    const ret = [];
+    for (var i = 0; i < vert.length; i+=3) {
+        const temp = [
+            [vert[i]],
+            [vert[i+1]],
+            [vert[i+2]],
+            [1]
+        ];
+        ret.push(temp);
+    }
+    return ret;
+}
+
 export function flatten2D(m) {
     var ret = []
     for (var i = 0; i < m.length; ++i) {
@@ -193,6 +207,36 @@ export function rotate(arr1d, tetax, tetay, tetaz, x, y, z) {
           rotate_z = rotatez(vertToMatrix(rotate_y)[0], tetaz),
           back = translation(vertToMatrix(rotate_z)[0], x, y, z)
     return back;
+}
+
+export function scaleBlock(arr1d, x, y, z) {
+    const mat = vertToMatrix(arr1d);
+    const ret = []
+    for (var i = 0; i < mat.length; ++i) {
+        const scaled = scaling(mat[i], x, y, z);
+        for (var j = 0; j < scaled.length-1; ++j) ret.push(scaled[j])
+    }
+    return new Float32Array(ret);
+}
+
+export function translateBlock(arr1d, x, y, z) {
+    const mat = vertToMatrix(arr1d);
+    const ret = []
+    for (var i = 0; i < mat.length; ++i) {
+        const translated = translation(mat[i], x, y, z);
+        for (var j = 0; j < translated.length-1; ++j) ret.push(translated[j])
+    }
+    return new Float32Array(ret);
+}
+
+export function rotateBlock(arr1d, tetax, tetay, tetaz, x, y, z) {
+    const mat = vertToMatrix(arr1d);
+    const ret = []
+    for (var i = 0; i < mat.length; ++i) {
+        const rotated = rotate(mat[i], tetax, tetay, tetaz, x, y, z);
+        for (var j = 0; j < rotated.length-1; ++j) ret.push(rotated[j])
+    }
+    return new Float32Array(ret);
 }
 
 export function matOrtho(left, right, bottom, top, near, far) {
@@ -338,5 +382,15 @@ export function inverse(m) {
     ret[15] = d * ((tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12) -
             (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
 
+    return ret;
+}
+
+export function changeBlockColor(block, r, g, b) {
+    const ret = []
+    for (var i = 0; i < block.length; i+=3) {
+        ret.push(r);
+        ret.push(g);
+        ret.push(b);
+    }
     return ret;
 }
