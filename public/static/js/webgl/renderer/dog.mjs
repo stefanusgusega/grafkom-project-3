@@ -33,6 +33,5 @@ export function renderYoga(master) {
     
     master.gl.bindBuffer(master.gl.ELEMENT_ARRAY_BUFFER, indices)
     master.gl.bufferData(master.gl.ELEMENT_ARRAY_BUFFER, master.yoga.renderedIndices, master.gl.STATIC_DRAW);
-    
     master.gl.drawElements(master.gl.TRIANGLES, master.yoga.renderedIndices.length, master.gl.UNSIGNED_SHORT, 0);
 }

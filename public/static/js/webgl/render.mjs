@@ -1,6 +1,5 @@
-import {renderYoga} from './renderer/yoga.mjs';
+import {renderYoga} from './renderer/dog.mjs';
 
 export function render(master) {
-    renderYoga(master);
-    
+    renderYoga(master);   
 }

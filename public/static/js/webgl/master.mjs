@@ -1,4 +1,4 @@
-import {Yoga} from './model/integrated/yoga.mjs';
+import {Yoga} from './model/integrated/dog.mjs';
 
 export class Master {
     constructor() {
