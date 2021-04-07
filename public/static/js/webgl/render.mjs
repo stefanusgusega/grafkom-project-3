@@ -1,5 +1,4 @@
-import {renderYoga} from './renderer/dog.mjs';
-
 export function render(master) {
-    renderYoga(master);   
+    master.gl.clear(master.gl.COLOR_BUFFER_BIT || master.gl.DEPTH_BUFFER_BIT);
+    master.renderer['yoga'].render();
 }

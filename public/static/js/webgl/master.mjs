@@ -22,6 +22,7 @@ export class Master {
         this.cameraRotation = [0, 0, 0];
 
         this.yoga = new Yoga();
+        this.renderer = {}
 
         this.matWorldUniformLocation;
         this.matViewUniformLocation;

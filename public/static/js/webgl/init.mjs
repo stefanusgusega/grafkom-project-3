@@ -1,6 +1,7 @@
 import {initShaders} from './utils/initShaders.mjs';
 import {transpose, inverse, translationTranspos, matIdentity, matLookAt, matPerspective, matOblique, matOrtho, matmul, degToRad, arrToMat, flatten2D} from './utils/util.mjs';
 import {render} from './render.mjs';
+import {YogasRenderer} from './renderer/dog.mjs'
 
 export function init(master) {
     master.canvas = document.getElementById('glCanvas');
@@ -52,6 +53,7 @@ export function init(master) {
 	master.gl.uniformMatrix4fv(master.matViewUniformLocation, false, viewMatrix);
     master.gl.uniformMatrix4fv(master.matProjUniformLocation, false, projMatrix);
     master.gl.uniformMatrix4fv(master.matNormLocation, false, normMatrix);
+    master.renderer['yoga'] = new YogasRenderer(master);
 
     events(master);
     render(master);
