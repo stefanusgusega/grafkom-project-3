@@ -1,10 +1,10 @@
-export class YogasRenderer {
+export class GiraffesRenderer {
     constructor(master) {
         this.master = master;
         this.vertex = master.gl.createBuffer();
         this.color = master.gl.createBuffer();
         this.indices = master.gl.createBuffer();
-        this.root = master.yoga.root;
+        this.root = master.giraffe.root;
     }
 
     render(node=this.root) {

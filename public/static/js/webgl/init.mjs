@@ -1,7 +1,7 @@
 import {initShaders} from './utils/initShaders.mjs';
 import {transpose, inverse, translationTranspos, matIdentity, matLookAt, matPerspective, matOblique, matOrtho, matmul, degToRad, arrToMat, flatten2D} from './utils/util.mjs';
 import {render} from './render.mjs';
-import {YogasRenderer} from './renderer/dog.mjs'
+import {GiraffesRenderer} from './renderer/giraffe.mjs'
 
 export function init(master) {
     master.canvas = document.getElementById('glCanvas');
@@ -53,7 +53,7 @@ export function init(master) {
 	master.gl.uniformMatrix4fv(master.matViewUniformLocation, false, viewMatrix);
     master.gl.uniformMatrix4fv(master.matProjUniformLocation, false, projMatrix);
     master.gl.uniformMatrix4fv(master.matNormLocation, false, normMatrix);
-    master.renderer['yoga'] = new YogasRenderer(master);
+    master.renderer['giraffe'] = new GiraffesRenderer(master);
 
     events(master);
     render(master);
@@ -115,6 +115,10 @@ function events(master) {
         'y': document.getElementById('upy'),
         'z': document.getElementById('upz')
     }
+    const animation = {
+        'giraffe': document.getElementById('giraffeRot'),
+    }
+
     const resetButton = document.getElementById('reset');
     const orthoButton = document.getElementById('ortho');
     const obliqueButton = document.getElementById('oblique');
@@ -192,6 +196,14 @@ function events(master) {
         updateView(master);
         render(master);
     }
+
+    animation['giraffe'].oninput = function() {
+        const val = parseInt(animation['giraffe'].value);
+        master.giraffe.rotation = val;
+        master.giraffe.updateAnimation();
+        master.giraffe.updateTransform();
+        render(master);
+    };
     
     shadeButoon.addEventListener("click", function(){
         const value_shadeButoon = document.getElementById('shade').value;
@@ -245,4 +257,6 @@ function events(master) {
         updateProj(master)
         render(master)
     })
+
+
 }

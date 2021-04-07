@@ -2,10 +2,9 @@ import {defCube, color, changeColor, indicesCube} from './../base/cube.mjs';
 import {rotateMat, translateMat, scaleMat, matmul, matIdentityMat, transformBlock, changeBlockColor, scaleBlock, flatten2D, translateBlock, rotateBlock, vertToMatrix, matIdentity} from './../../utils/util.mjs';
 import {Node} from './../node.mjs';
 
-export class Yoga {
+export class Giraffe {
     constructor() {
         this.center = [0, 0, 0];
-
         this.buildSkeleton()
     }
 
@@ -78,7 +77,10 @@ export class Yoga {
             'leg-back-right': this.centers['leg-back-right'],
         }
 
+        this.rotation = 0;
+
         this.createTree()
+        this.updateAnimation();
         this.updateTransform();
     }
 
@@ -93,19 +95,16 @@ export class Yoga {
         this.root.left.right.right = skeletonNodes['leg-front-right'] 
         this.root.left.right.right.right = skeletonNodes['leg-back-left'] 
         this.root.left.right.right.right.right = skeletonNodes['leg-back-right'] 
-        console.log(this.root)
-
-        this.root.left.transform = rotateMat(20, 0, 0, this.root.left.jointPoint[0], this.root.left.jointPoint[1], this.root.left.jointPoint[2])
     }
 
     updateTransform(node=this.root) {
         node.render['vertices'] = transformBlock(node.defVertices, node.transform);
         if (node.left) {
-            node.left.transform = matmul(node.left.transform, node.transform);
+            node.left.transform = matmul(node.left.baseTransform, node.transform);
             node.left.render['vertices'] = transformBlock(node.left.defVertices, node.left.transform);
             var siblingNode = node.left.right;
             while (siblingNode) {
-                siblingNode.transform = matmul(siblingNode.transform, node.transform);
+                siblingNode.transform = matmul(siblingNode.baseTransform, node.transform);
                 siblingNode.render['vertices'] = transformBlock(siblingNode.defVertices, siblingNode.transform);
                 if (siblingNode.left) {
                     this.updateTransform(siblingNode.left);
@@ -114,5 +113,13 @@ export class Yoga {
             }
             this.updateTransform(node.left);
         }
+    }
+
+    updateAnimation() {
+        this.root.left.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.jointPoint[0], this.root.left.jointPoint[1], this.root.left.jointPoint[2])
+        this.root.left.right.baseTransform = rotateMat(-this.rotation, 0, 0, this.root.left.right.jointPoint[0], this.root.left.right.jointPoint[1], this.root.left.right.jointPoint[2])
+        this.root.left.right.right.baseTransform = rotateMat(-this.rotation, 0, 0, this.root.left.right.right.jointPoint[0], this.root.left.right.right.jointPoint[1], this.root.left.right.right.jointPoint[2])
+        this.root.left.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.jointPoint[0], this.root.left.right.right.right.jointPoint[1], this.root.left.right.right.right.jointPoint[2])
+        this.root.left.right.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.right.jointPoint[0], this.root.left.right.right.right.right.jointPoint[1], this.root.left.right.right.right.right.jointPoint[2])
     }
 }

@@ -1,3 +1,6 @@
+import {matIdentityMat} from './../utils/util.mjs';
+
+
 export class Node {
     constructor(transform, jointPoint, center, vertices, indices, color, left, right, name) {
         this.name = name;
@@ -5,6 +8,7 @@ export class Node {
         this.left = left;
         this.right = right;
         this.center = center;
+        this.baseTransform = matIdentityMat();
         this.transform = transform;
         this.jointPoint = jointPoint;
         this.defVertices = vertices;
