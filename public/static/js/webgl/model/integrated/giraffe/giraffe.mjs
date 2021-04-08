@@ -1,6 +1,7 @@
-import {defCube, color, changeColor, indicesCube} from './../base/cube.mjs';
-import {rotateMat, translateMat, scaleMat, matmul, matIdentityMat, transformBlock, changeBlockColor, scaleBlock, flatten2D, translateBlock, rotateBlock, vertToMatrix, matIdentity} from './../../utils/util.mjs';
-import {Node} from './../node.mjs';
+import {defCube, color, changeColor, indicesCube, cubeTextureCoordinates, getNormalCube} from './../../base/cube.mjs';
+import {rotateMat, translateMat, scaleMat, matmul, matIdentityMat, transformBlock, changeBlockColor, scaleBlock, flatten2D, translateBlock, rotateBlock, vertToMatrix, matIdentity} from './../../../utils/util.mjs';
+import {Node} from './../../node.mjs';
+import {texture} from './textures.mjs';
 
 export class Giraffe {
     constructor() {
@@ -77,6 +78,36 @@ export class Giraffe {
             'leg-back-right': this.centers['leg-back-right'],
         }
 
+        this.textures = {
+            'body': texture,
+            'head': texture,
+            'neck': texture,
+            'leg-front-left': texture,
+            'leg-front-right': texture,
+            'leg-back-left': texture,
+            'leg-back-right': texture,
+        }
+
+        this.textureCoords = {
+            'body': cubeTextureCoordinates,
+            'head': cubeTextureCoordinates,
+            'neck': cubeTextureCoordinates,
+            'leg-front-left': cubeTextureCoordinates,
+            'leg-front-right': cubeTextureCoordinates,
+            'leg-back-left': cubeTextureCoordinates,
+            'leg-back-right': cubeTextureCoordinates,
+        }
+
+        this.normals = {
+            'body': getNormalCube(this.skeletons['body']),
+            'head': getNormalCube(this.skeletons['head']),
+            'neck': getNormalCube(this.skeletons['neck']),
+            'leg-front-left': getNormalCube(this.skeletons['leg-front-left']),
+            'leg-front-right': getNormalCube(this.skeletons['leg-front-right']),
+            'leg-back-left': getNormalCube(this.skeletons['leg-back-left']),
+            'leg-back-right': getNormalCube(this.skeletons['leg-back-right']),
+        }
+
         this.rotation = 0;
 
         this.createTree()
@@ -86,7 +117,7 @@ export class Giraffe {
 
     createTree() {
         const skeletonNodes = {};
-        for (var k in this.skeletons) skeletonNodes[k] = new Node(matIdentityMat(), this.jointPoints[k], this.centers[k], this.skeletons[k], indicesCube, this.colors[k], null, null, k);
+        for (var k in this.skeletons) skeletonNodes[k] = new Node(matIdentityMat(), this.jointPoints[k], this.centers[k], this.skeletons[k], indicesCube, this.colors[k], this.normals[k], this.textures[k], this.textureCoords[k], null, null, k);
 
         this.root = skeletonNodes['body'];
         this.root.left = skeletonNodes['neck'];
@@ -99,13 +130,16 @@ export class Giraffe {
 
     updateTransform(node=this.root) {
         node.render['vertices'] = transformBlock(node.defVertices, node.transform);
+        node.render['normal'] = getNormalCube(node.render['vertices']);
         if (node.left) {
             node.left.transform = matmul(node.left.baseTransform, node.transform);
             node.left.render['vertices'] = transformBlock(node.left.defVertices, node.left.transform);
+            node.left.render['normal'] = getNormalCube(node.left.render['vertices']);
             var siblingNode = node.left.right;
             while (siblingNode) {
                 siblingNode.transform = matmul(siblingNode.baseTransform, node.transform);
                 siblingNode.render['vertices'] = transformBlock(siblingNode.defVertices, siblingNode.transform);
+                siblingNode.render['normal'] = getNormalCube(siblingNode.render['vertices']);
                 if (siblingNode.left) {
                     this.updateTransform(siblingNode.left);
                 }
@@ -116,6 +150,7 @@ export class Giraffe {
     }
 
     updateAnimation() {
+        this.root.transform = rotateMat(this.rotation, 0, 0, this.root.jointPoint[0], this.root.jointPoint[1], this.root.jointPoint[2]);
         this.root.left.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.jointPoint[0], this.root.left.jointPoint[1], this.root.left.jointPoint[2])
         this.root.left.right.baseTransform = rotateMat(-this.rotation, 0, 0, this.root.left.right.jointPoint[0], this.root.left.right.jointPoint[1], this.root.left.right.jointPoint[2])
         this.root.left.right.right.baseTransform = rotateMat(-this.rotation, 0, 0, this.root.left.right.right.jointPoint[0], this.root.left.right.right.jointPoint[1], this.root.left.right.right.jointPoint[2])
