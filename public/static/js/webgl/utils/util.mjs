@@ -462,3 +462,40 @@ export function transformBlock(block, mat) {
     }
     return flatten2D(ret);
 }
+
+export function isPowerOf2(value) {
+    return (value & (value - 1)) == 0;
+}
+
+export function loadTexture(master, base64) {
+    const texture = master.gl.createTexture();
+    master.gl.bindTexture(master.gl.TEXTURE_2D, texture);
+    const level = 0;
+    const internalFormat = master.gl.RGBA;
+    const width = 1;
+    const height = 1;
+    const border = 0;
+    const srcFormat = master.gl.RGBA;
+    const srcType = master.gl.UNSIGNED_BYTE;
+    const pixel = new Uint8Array([255, 0, 0, 255]);
+    master.gl.texImage2D(master.gl.TEXTURE_2D, level, internalFormat,
+                  width, height, border, srcFormat, srcType,
+                  pixel);
+    
+    const image = new Image();
+    image.onload = function () {
+        master.gl.bindTexture(master.gl.TEXTURE_2D, texture);
+        master.gl.texImage2D(master.gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
+
+        if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+            master.gl.generateMipmap(master.gl.TEXTURE_2D);
+        } else {
+            master.gl.texParameteri(master.gl.TEXTURE_2D, master.gl.TEXTURE_WRAP_S, master.gl.CLAMP_TO_EDGE);
+            master.gl.texParameteri(master.gl.TEXTURE_2D, master.gl.TEXTURE_WRAP_T, master.gl.CLAMP_TO_EDGE);
+            master.gl.texParameteri(master.gl.TEXTURE_2D, master.gl.TEXTURE_MIN_FILTER, master.gl.LINEAR);
+        }
+    }
+    image.src = base64;
+    
+    return texture;
+}

@@ -7,10 +7,10 @@
     <script id="shaderVs" type="x-shader/x-vertex">
         precision mediump float;
         attribute vec3 vertPosition;
-        attribute vec3 vertColor;
         attribute vec3 vertNormal;
+        attribute vec2 vertTexture;
         
-        varying vec3 fragColor;
+        varying vec2 vTextureCoord;
         varying highp vec3 vLighting;
 
         uniform mat4 mWorld;
@@ -18,9 +18,8 @@
         uniform mat4 mProj;
         uniform mat4 mNorm;
 
-
         void main() {
-            fragColor = vertColor;
+            vTextureCoord = vertTexture;
             gl_Position = mProj * mView * mWorld * vec4(vertPosition, 1.0);
 
             highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
@@ -34,17 +33,24 @@
     
     <script id="shaderFs" type="x-shader/x-fragment">
         precision mediump float;
-        varying vec3 fragColor;
+
+        varying highp vec2 vTextureCoord;
         varying highp vec3 vLighting;
+
+        uniform sampler2D uSampler;
+
         uniform bool stateShade;
+        uniform int mode;
 
         void main() {
-            if(stateShade == false){
-                gl_FragColor = vec4(fragColor * vec3(1, 1,1), 1.0);
-
-            }else{
-                //vLighting = ambientLight + (directionalLightColor * directional);
-                gl_FragColor = vec4(fragColor * vLighting, 1.0);
+            if (stateShade) {
+                if (mode == 0) {
+                    highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
+                    gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
+                }
+            } else {
+                highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
+                gl_FragColor = vec4(texelColor.rgb * vec3(1, 1, 1), texelColor.a);
             }
         }
     </script>
@@ -119,6 +125,7 @@
                     <label>Giraffe Animation</label>
                 </div>
                 <input type="range" min="-20" max="20" value="0" class="slider" id="giraffeRot">
+                <button type="button" id="giraffeAnimate">animate</button>
             </div>
             <div>
                 <button onclick="help()">Help</button>
