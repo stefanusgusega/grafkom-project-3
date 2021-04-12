@@ -1,6 +1,7 @@
 import {initShaders} from './utils/initShaders.mjs';
 import {transpose, inverse, translationTranspos, matIdentity, matLookAt, matPerspective, matOblique, matOrtho, matmul, degToRad, arrToMat, flatten2D} from './utils/util.mjs';
 import {render} from './render.mjs';
+import {GiraffesRenderer} from './renderer/giraffe.mjs'
 
 export function init(master) {
     master.canvas = document.getElementById('glCanvas');
@@ -30,29 +31,36 @@ export function init(master) {
     master.vPosition = master.gl.getAttribLocation(master.gl.program, 'vertPosition');
     master.vColor = master.gl.getAttribLocation(master.gl.program, 'vertColor');
     master.vNormal = master.gl.getAttribLocation(master.gl.program, 'vertNormal');
+    master.vTexture = master.gl.getAttribLocation(master.gl.program, 'vertTexture');
 
     master.matWorldUniformLocation = master.gl.getUniformLocation(master.gl.program, 'mWorld');
 	master.matViewUniformLocation = master.gl.getUniformLocation(master.gl.program, 'mView');
     master.matProjUniformLocation = master.gl.getUniformLocation(master.gl.program, 'mProj');
     master.matNormLocation = master.gl.getUniformLocation(master.gl.program, 'mNorm');
+    master.matUSamplerLocation = master.gl.getUniformLocation(master.gl.program, 'uSampler');
+    master.mappingMode = master.gl.getUniformLocation(master.gl.program, 'mode');
+    master.shadeMode = master.gl.getUniformLocation(master.gl.program, 'stateShade');
     
     var worldMatrix = matIdentity();
     var viewMatrix = matLookAt(master.eye, master.center, master.up);
     var projMatrix = matPerspective(degToRad(45), 640/640, 0.1, 1000.0);
     var normMatrix = transpose(inverse(flatten2D(matmul(arrToMat(viewMatrix), arrToMat(worldMatrix)))));
 
-    const value_shadeButoon = document.getElementById('shade').value;
-    if (value_shadeButoon == "On") {
-        master.gl.uniform1i(master.gl.getUniformLocation(master.gl.program,"stateShade"), 1);  
+    const value_shadeButton = document.getElementById('shade').value;
+    if (value_shadeButton == "On") {
+        master.gl.uniform1i(master.shadeMode, 1);  
     } else {
-        master.gl.uniform1i(master.gl.getUniformLocation(master.gl.program,"stateShade"), 0);  
+        master.gl.uniform1i(master.shadeMode, 0);  
     }
 
     master.gl.uniformMatrix4fv(master.matWorldUniformLocation, false, worldMatrix);
 	master.gl.uniformMatrix4fv(master.matViewUniformLocation, false, viewMatrix);
     master.gl.uniformMatrix4fv(master.matProjUniformLocation, false, projMatrix);
     master.gl.uniformMatrix4fv(master.matNormLocation, false, normMatrix);
+    master.gl.uniform1i(master.matUSamplerLocation, 0);
 
+    master.renderer['giraffe'] = new GiraffesRenderer(master);
+    
     events(master);
     render(master);
 }
@@ -113,11 +121,17 @@ function events(master) {
         'y': document.getElementById('upy'),
         'z': document.getElementById('upz')
     }
+    const animation = {
+        'giraffe': document.getElementById('giraffeRot'),
+    }
+
     const resetButton = document.getElementById('reset');
     const orthoButton = document.getElementById('ortho');
     const obliqueButton = document.getElementById('oblique');
     const perspectiveButton = document.getElementById('perspective');
     const shadeButoon = document.getElementById('shade');
+
+    const giraffeButton = document.getElementById('giraffeAnimate');
     
     movement['x'].oninput = function() {
         master.movement[0] = parseInt(movement['x'].value);
@@ -190,10 +204,18 @@ function events(master) {
         updateView(master);
         render(master);
     }
+
+    animation['giraffe'].oninput = function() {
+        const val = parseInt(animation['giraffe'].value);
+        master.giraffe.rotation = val;
+        master.giraffe.updateAnimation();
+        master.giraffe.updateTransform();
+        render(master);
+    };
     
     shadeButoon.addEventListener("click", function(){
-        const value_shadeButoon = document.getElementById('shade').value;
-        if(value_shadeButoon == "On"){
+        const value_shadeButton = document.getElementById('shade').value;
+        if(value_shadeButton == "On"){
             document.getElementById("shade").value="Off";
             master.gl.uniform1i(master.gl.getUniformLocation(master.gl.program,"stateShade"), 0);  
         }else{
@@ -243,4 +265,37 @@ function events(master) {
         updateProj(master)
         render(master)
     })
+
+    giraffeButton.addEventListener("click", function() {
+        var now = parseInt(animation['giraffe'].value);
+        var markUp = true;
+        var markDown = false;
+        function animate() {
+            master.renderer['giraffe'].render();
+            if (markUp) {
+                now++;
+                if (now == 20) {
+                    markUp = false;
+                    markDown = true;
+                }
+            }
+            if (markDown) {
+                now--;
+                if (now == -20) {
+                    markUp = true;
+                    markDown = false;
+                }
+            }
+
+            master.giraffe.rotation = now;
+            master.giraffe.updateAnimation();
+            master.giraffe.updateTransform();
+            animation['giraffe'].value = now;
+            
+            if (master.isStartGiraffeAnimation) requestAnimationFrame(animate);
+        }
+
+        master.isStartGiraffeAnimation = !master.isStartGiraffeAnimation;
+        if (master.isStartGiraffeAnimation) requestAnimationFrame(animate);
+    });
 }

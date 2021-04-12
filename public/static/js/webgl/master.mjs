@@ -1,4 +1,4 @@
-import {Yoga} from './model/integrated/yoga.mjs';
+import {Giraffe} from './model/integrated/giraffe/giraffe.mjs';
 
 export class Master {
     constructor() {
@@ -12,6 +12,7 @@ export class Master {
         this.vPosition;
         this.vColor;
         this.vNormal;
+        this.vTexture;
 
         this.eye = [0, 0, -8];
         this.center = [0, 0, 0];
@@ -21,10 +22,13 @@ export class Master {
         this.movement = [0, 0, 0];
         this.cameraRotation = [0, 0, 0];
 
-        this.yoga = new Yoga();
+        this.giraffe = new Giraffe();
+        this.isStartGiraffeAnimation = false;
+        this.renderer = {}
 
         this.matWorldUniformLocation;
         this.matViewUniformLocation;
         this.matProjUniformLocation;
+        this.matUSamplerLocation;
     }
 }

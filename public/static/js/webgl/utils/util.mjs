@@ -29,6 +29,15 @@ export function matIdentity() {
     ]);
 }
 
+export function matIdentityMat() {
+    return [
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1],
+    ]
+}
+
 const EPSILON = 0.00001;
 
 export function matLookAt(eye, center, up) {
@@ -148,6 +157,49 @@ export function flatten2D(m) {
         }
     }
     return new Float32Array(ret);
+}
+
+export function scaleMat(x, y, z) {
+    return [
+        [x, 0, 0, 0],
+        [0, y, 0, 0],
+        [0, 0, z, 0],
+        [0, 0, 0, 1],
+    ]
+}
+
+export function translateMat(x, y, z) {
+    return [
+        [1, 0, 0, x],
+        [0, 1, 0, y],
+        [0, 0, 1, z],
+        [0, 0, 0, 1]
+    ]
+}
+
+export function rotateMat(tetax, tetay, tetaz, x, y, z) {
+    const minTrans = translateMat(-x, -y, -z)
+    const rotatex = [
+        [1, 0, 0, 0],
+        [0, Math.cos(degToRad(tetax)), Math.sin(degToRad(tetax)), 0],
+        [0, -Math.sin(degToRad(tetax)), Math.cos(degToRad(tetax)), 0],
+        [0, 0, 0, 1]
+    ]
+    const rotatey = [
+        [Math.cos(degToRad(tetay)), 0, -Math.sin(degToRad(tetay)), 0],
+        [0, 1, 0, 0],
+        [Math.sin(degToRad(tetay)), 0, Math.cos(degToRad(tetay)), 0],
+        [0, 0, 0, 1]
+    ]
+    const rotatez = [
+        [Math.cos(degToRad(tetaz)), -Math.sin(degToRad(tetaz)), 0, 0],
+        [Math.sin(degToRad(tetaz)), Math.cos(degToRad(tetaz)), 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
+    ]
+    const posTrans = translateMat(x, y, z);
+    const ret = matmul(matmul(matmul(matmul(posTrans, rotatez), rotatey), rotatex), minTrans);
+    return ret
 }
 
 export function translation(matrix, x, y, z) {
@@ -393,4 +445,57 @@ export function changeBlockColor(block, r, g, b) {
         ret.push(b);
     }
     return ret;
+}
+
+export function transformBlock(block, mat) {
+    const ret = [];
+    for (var i = 0; i < block.length; i+=3) {
+        const temp = [
+            [block[i]],
+            [block[i+1]],
+            [block[i+2]],
+            [1]
+        ]
+        const transformed = matmul(mat, temp);
+        const takenVert = [transformed[0], transformed[1], transformed[2]]
+        ret.push(new Float32Array(takenVert));
+    }
+    return flatten2D(ret);
+}
+
+export function isPowerOf2(value) {
+    return (value & (value - 1)) == 0;
+}
+
+export function loadTexture(master, base64) {
+    const texture = master.gl.createTexture();
+    master.gl.bindTexture(master.gl.TEXTURE_2D, texture);
+    const level = 0;
+    const internalFormat = master.gl.RGBA;
+    const width = 1;
+    const height = 1;
+    const border = 0;
+    const srcFormat = master.gl.RGBA;
+    const srcType = master.gl.UNSIGNED_BYTE;
+    const pixel = new Uint8Array([255, 0, 0, 255]);
+    master.gl.texImage2D(master.gl.TEXTURE_2D, level, internalFormat,
+                  width, height, border, srcFormat, srcType,
+                  pixel);
+    
+    const image = new Image();
+    image.onload = function () {
+        master.gl.bindTexture(master.gl.TEXTURE_2D, texture);
+        master.gl.texImage2D(master.gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
+
+        if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+            master.gl.generateMipmap(master.gl.TEXTURE_2D);
+        } else {
+            master.gl.texParameteri(master.gl.TEXTURE_2D, master.gl.TEXTURE_WRAP_S, master.gl.CLAMP_TO_EDGE);
+            master.gl.texParameteri(master.gl.TEXTURE_2D, master.gl.TEXTURE_WRAP_T, master.gl.CLAMP_TO_EDGE);
+            master.gl.texParameteri(master.gl.TEXTURE_2D, master.gl.TEXTURE_MIN_FILTER, master.gl.LINEAR);
+        }
+    }
+    image.src = base64;
+    
+    return texture;
 }
