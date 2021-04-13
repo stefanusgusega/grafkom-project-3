@@ -39,8 +39,8 @@ export class Dog {
         }
         const translateTail = [xCenter, yCenter, bodySize[2]/2+tailSize[2]/2];
         const translateEar = {
-            'left': [xCenter+bodySize[0]/2-earSize[0]/2, 2*translateNeck[1]+earSize[1]/2, translateNeck[2]*2], // perlu dicek lagi
-            'right': [xCenter-(bodySize[0]/2-earSize[0]/2), 2*translateNeck[1]+earSize[1]/2, translateNeck[2]*2] // perlu dicek lagi
+            'left': [xCenter+bodySize[0]/2-earSize[0]/2, translateNeck[1]+neckSize[1]/2+earSize[1]/2, translateNeck[2]-neckSize[2]/2], // perlu dicek lagi
+            'right': [xCenter-(bodySize[0]/2-earSize[0]/2), translateNeck[1]+neckSize[1]/2+earSize[1]/2, translateNeck[2]-neckSize[2]/2] // perlu dicek lagi
         }
 
     }
