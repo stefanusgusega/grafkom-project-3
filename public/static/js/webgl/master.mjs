@@ -1,5 +1,5 @@
 import {Giraffe} from './model/integrated/giraffe/giraffe.mjs';
-
+import {Dog} from './model/integrated/dog/dog.mjs';
 export class Master {
     constructor() {
         this.canvas;
