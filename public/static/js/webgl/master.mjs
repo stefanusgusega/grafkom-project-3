@@ -23,6 +23,7 @@ export class Master {
         this.cameraRotation = [0, 0, 0];
 
         this.giraffe = new Giraffe();
+        this.dog = new Dog();
         this.isStartGiraffeAnimation = false;
         this.renderer = {}
 
