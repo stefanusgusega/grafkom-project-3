@@ -6,7 +6,7 @@ import {GiraffesRenderer} from './renderer/giraffe.mjs'
 export function init(master) {
     master.canvas = document.getElementById('glCanvas');
     master.gl = master.canvas.getContext('webgl');
-    
+    var standard_derivatives = master.gl.getExtension("OES_standard_derivatives");
     const canvas_size = 640;
 
     if (!master.gl) throw new Error('Web GL Not Supported');
@@ -40,6 +40,10 @@ export function init(master) {
     master.matUSamplerLocation = master.gl.getUniformLocation(master.gl.program, 'uSampler');
     master.mappingMode = master.gl.getUniformLocation(master.gl.program, 'mode');
     master.shadeMode = master.gl.getUniformLocation(master.gl.program, 'stateShade');
+    master.matDiffuseLocation = master.gl.getUniformLocation(master.gl.program, 'u_diffuse');
+    master.matNormMapLocation = master.gl.getUniformLocation(master.gl.program, 'u_normal_map');
+    master.matLightPosLocation = master.gl.getUniformLocation(master.gl.program, 'u_light_pos');
+
     
     var worldMatrix = matIdentity();
     var viewMatrix = matLookAt(master.eye, master.center, master.up);
@@ -58,7 +62,10 @@ export function init(master) {
     master.gl.uniformMatrix4fv(master.matProjUniformLocation, false, projMatrix);
     master.gl.uniformMatrix4fv(master.matNormLocation, false, normMatrix);
     master.gl.uniform1i(master.matUSamplerLocation, 0);
-
+    // bump mapping
+    master.gl.uniform1i(master.matDiffuseLocation, 0.5);
+    master.gl.uniform1i(master.matNormMapLocation, 0.5);
+    
     master.renderer['giraffe'] = new GiraffesRenderer(master);
     
     events(master);

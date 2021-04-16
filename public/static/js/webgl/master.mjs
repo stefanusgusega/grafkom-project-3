@@ -31,5 +31,9 @@ export class Master {
         this.matViewUniformLocation;
         this.matProjUniformLocation;
         this.matUSamplerLocation;
+        // for bump mapping
+        this.matDiffuseLocation;
+        this.matNormMapLocation;
+        this.matLightPosLocation;
     }
 }
