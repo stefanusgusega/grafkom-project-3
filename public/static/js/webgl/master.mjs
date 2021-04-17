@@ -1,4 +1,5 @@
 import {Giraffe} from './model/integrated/giraffe/giraffe.mjs';
+import {Bat} from './model/integrated/giraffe/Bat.mjs';
 
 export class Master {
     constructor() {
@@ -24,11 +25,15 @@ export class Master {
 
         this.giraffe = new Giraffe();
         this.isStartGiraffeAnimation = false;
+        this.Bat = new Bat();
+        this.isStartBatAnimation = false;
         this.renderer = {}
 
         this.matWorldUniformLocation;
         this.matViewUniformLocation;
         this.matProjUniformLocation;
         this.matUSamplerLocation;
+
+        this.worldCameraPositionLocation;
     }
 }
