@@ -4,54 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/css/main.css">
-    <script id="shaderVs" type="x-shader/x-vertex">
-        precision mediump float;
-        attribute vec3 vertPosition;
+    <script id="shaderVs" type="x-shader/x-vertex">        
+        attribute vec4 vertPosition;
         attribute vec3 vertNormal;
-        attribute vec2 vertTexture;
-        
-        varying vec2 vTextureCoord;
-        varying highp vec3 vLighting;
+
 
         uniform mat4 mWorld;
         uniform mat4 mView;
         uniform mat4 mProj;
-        uniform mat4 mNorm;
+
+        varying vec3 v_worldPosition;
+        varying vec3 v_worldNormal;
 
         void main() {
-            vTextureCoord = vertTexture;
-            gl_Position = mProj * mView * mWorld * vec4(vertPosition, 1.0);
+        // Multiply the position by the matrix.
+        gl_Position =  mProj * mView * mWorld * vertPosition;
 
-            highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
-            highp vec3 directionalLightColor = vec3(1, 1, 1);
-            highp vec3 directionalVector = normalize(vec3(0.85, 0.8, 0.75));
-            highp vec4 transformedNormal = mNorm * vec4(vertNormal, 1);
-            highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
-            vLighting = ambientLight + (directionalLightColor * directional);
+        // send the view position to the fragment shader
+        v_worldPosition = (mWorld * vertPosition).xyz;
+
+        // orient the normals and pass to the fragment shader
+        v_worldNormal = mat3(mWorld) * vertNormal;
         }
     </script>
     
     <script id="shaderFs" type="x-shader/x-fragment">
-        precision mediump float;
+        precision highp float;
 
-        varying highp vec2 vTextureCoord;
-        varying highp vec3 vLighting;
+        // Passed in from the vertex shader.
+        varying vec3 v_worldPosition;
+        varying vec3 v_worldNormal;
 
-        uniform sampler2D uSampler;
+        // The texture.
+        uniform samplerCube uSampler;
 
-        uniform bool stateShade;
-        uniform int mode;
+        // The position of the camera
+        uniform vec3 mWorldCameraPosition;
 
         void main() {
-            if (stateShade) {
-                if (mode == 0) {
-                    highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
-                    gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
-                }
-            } else {
-                highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
-                gl_FragColor = vec4(texelColor.rgb * vec3(1, 1, 1), texelColor.a);
-            }
+        vec3 worldNormal = normalize(v_worldNormal);
+        vec3 eyeToSurfaceDir = normalize(v_worldPosition - mWorldCameraPosition);
+        vec3 direction = reflect(eyeToSurfaceDir,worldNormal);
+
+        gl_FragColor = textureCube(uSampler, direction);
         }
     </script>
     <script>
