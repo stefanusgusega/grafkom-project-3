@@ -2,6 +2,7 @@ import {initShaders} from './utils/initShaders.mjs';
 import {transpose, inverse, translationTranspos, matIdentity, matLookAt, matPerspective, matOblique, matOrtho, matmul, degToRad, arrToMat, flatten2D} from './utils/util.mjs';
 import {render} from './render.mjs';
 import {GiraffesRenderer} from './renderer/giraffe.mjs'
+import {BatRenderer} from './renderer/Bat.mjs'
 
 export function init(master) {
     master.canvas = document.getElementById('glCanvas');
@@ -41,6 +42,10 @@ export function init(master) {
     master.mappingMode = master.gl.getUniformLocation(master.gl.program, 'mode');
     master.shadeMode = master.gl.getUniformLocation(master.gl.program, 'stateShade');
     
+
+    
+  	
+    
     var worldMatrix = matIdentity();
     var viewMatrix = matLookAt(master.eye, master.center, master.up);
     var projMatrix = matPerspective(degToRad(45), 640/640, 0.1, 1000.0);
@@ -60,6 +65,7 @@ export function init(master) {
     master.gl.uniform1i(master.matUSamplerLocation, 0);
 
     master.renderer['giraffe'] = new GiraffesRenderer(master);
+    master.renderer['Bat'] = new BatRenderer(master);
     
     events(master);
     render(master);
