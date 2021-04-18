@@ -86,7 +86,7 @@
 
                     vec3 color     = texture2D(u_diffuse, o_uv.st).rgb;
                     vec3 light_col = (0.0 + kd) * color.rgb;
-                    gl_FragColor   = vec4(clamp(light_col, 0.0, 1.0), 1.0);
+                    gl_FragColor   = vec4(clamp(light_col, 0.0, 1.0) * vLighting, 1.0);
                 }
             } else {
                 highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
@@ -232,6 +232,63 @@
                 <input type="range" min="-20" max="20" value="0" class="slider" id="giraffeRot">
                 <button type="button" id="giraffeAnimate">animate</button>
             </div>
+            <div>
+                <div>
+                    <label>Dog Translation</label>
+                </div>
+                <input type="range" min="-10" max="10" value="0" class="slider" id="dTx">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="dTy">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="dTz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Neck Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dRNx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dRNy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dRNz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Head Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dHx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dHy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dHz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Leg Front Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFLz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Leg Front Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFRz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Leg Back Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBLz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Leg Back Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBRz">
+            </div>
+            <div>
             <div>
                 <div>
                     <label>Dog Animation</label>

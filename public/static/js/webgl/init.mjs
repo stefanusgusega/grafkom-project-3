@@ -7,7 +7,7 @@ import {DogRenderer} from './renderer/dog.mjs'
 export function init(master) {
     master.canvas = document.getElementById('glCanvas');
     master.gl = master.canvas.getContext('webgl');
-    var standard_derivatives = master.gl.getExtension("OES_standard_derivatives");
+    master.gl.getExtension("OES_standard_derivatives");
 
     if (!master.gl) throw new Error('Web GL Not Supported');
 
@@ -147,6 +147,41 @@ function events(master) {
         'x': document.getElementById('gLBRx'),
         'y': document.getElementById('gLBRy'),
         'z': document.getElementById('gLBRz')
+    }
+    const dogTranslation = {
+        'x': document.getElementById('dTx'),
+        'y': document.getElementById('dTy'),
+        'z': document.getElementById('dTz')
+    }
+    const dogNeckRotation = {
+        'x': document.getElementById('dRNx'),
+        'y': document.getElementById('dRNy'),
+        'z': document.getElementById('dRNz')
+    }
+    const dogHeadRotation = {
+        'x': document.getElementById('dHx'),
+        'y': document.getElementById('dHy'),
+        'z': document.getElementById('dHz')
+    }
+    const dogLegFrontLeftRotation = {
+        'x': document.getElementById('dLFLx'),
+        'y': document.getElementById('dLFLy'),
+        'z': document.getElementById('dLFLz')
+    }
+    const dogLegFrontRightRotation = {
+        'x': document.getElementById('dLFRx'),
+        'y': document.getElementById('dLFRy'),
+        'z': document.getElementById('dLFRz')
+    }
+    const dogLegBackLeftRotation = {
+        'x': document.getElementById('dLBLx'),
+        'y': document.getElementById('dLBLy'),
+        'z': document.getElementById('dLBLz')
+    }
+    const dogLegBackRightRotation = {
+        'x': document.getElementById('dLBRx'),
+        'y': document.getElementById('dLBRy'),
+        'z': document.getElementById('dLBRz')
     }
     const movement = {
         'x': document.getElementById('movex'),
@@ -423,6 +458,174 @@ function events(master) {
         master.giraffe.inRotation['leg-back-right']['y'] = val
         master.giraffe.rotateModel()
         master.giraffe.updateTransform()
+        render(master)
+    }
+
+    dogTranslation['x'].oninput = function() {
+        const val = parseInt(dogTranslation['x'].value)
+        master.dog.bodyLocation[0] = val
+        master.dog.translateModel()
+        master.dog.updateTransform()
+        render(master);
+    }
+    
+    dogTranslation['y'].oninput = function() {
+        const val = parseInt(dogTranslation['y'].value)
+        master.dog.bodyLocation[1] = val
+        master.dog.translateModel()
+        master.dog.updateTransform()
+        render(master);
+    }
+    
+    dogTranslation['z'].oninput = function() {
+        const val = parseInt(dogTranslation['z'].value)
+        master.dog.bodyLocation[2] = val
+        master.dog.translateModel()
+        master.dog.updateTransform()
+        render(master);
+    }
+    
+    dogNeckRotation['x'].oninput = function() {
+        const val = parseInt(dogNeckRotation['x'].value)
+        master.dog.inRotation['neck']['x'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogNeckRotation['y'].oninput = function() {
+        const val = parseInt(dogNeckRotation['y'].value)
+        master.dog.inRotation['neck']['y'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogNeckRotation['z'].oninput = function() {
+        const val = parseInt(dogNeckRotation['z'].value)
+        master.dog.inRotation['neck']['z'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogHeadRotation['x'].oninput = function() {
+        const val = parseInt(dogHeadRotation['x'].value)
+        master.dog.inRotation['head']['x'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogHeadRotation['y'].oninput = function() {
+        const val = parseInt(dogHeadRotation['y'].value)
+        master.dog.inRotation['head']['y'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogHeadRotation['z'].oninput = function() {
+        const val = parseInt(dogHeadRotation['z'].value)
+        master.dog.inRotation['head']['z'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegFrontLeftRotation['x'].oninput = function() {
+        const val = parseInt(dogLegFrontLeftRotation['x'].value)
+        master.dog.inRotation['leg-front-left']['x'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegFrontLeftRotation['y'].oninput = function() {
+        const val = parseInt(dogLegFrontLeftRotation['y'].value)
+        master.dog.inRotation['leg-front-left']['y'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegFrontLeftRotation['z'].oninput = function() {
+        const val = parseInt(dogLegFrontLeftRotation['z'].value)
+        master.dog.inRotation['leg-front-left']['z'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegFrontRightRotation['x'].oninput = function() {
+        const val = parseInt(dogLegFrontRightRotation['x'].value)
+        master.dog.inRotation['leg-front-right']['x'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegFrontRightRotation['y'].oninput = function() {
+        const val = parseInt(dogLegFrontRightRotation['y'].value)
+        master.dog.inRotation['leg-front-right']['y'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegFrontRightRotation['z'].oninput = function() {
+        const val = parseInt(dogLegFrontRightRotation['z'].value)
+        master.dog.inRotation['leg-front-right']['z'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegBackLeftRotation['x'].oninput = function() {
+        const val = parseInt(dogLegBackLeftRotation['x'].value)
+        master.dog.inRotation['leg-back-left']['x'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegBackLeftRotation['y'].oninput = function() {
+        const val = parseInt(dogLegBackLeftRotation['y'].value)
+        master.dog.inRotation['leg-back-left']['y'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegBackLeftRotation['z'].oninput = function() {
+        const val = parseInt(dogLegBackLeftRotation['z'].value)
+        master.dog.inRotation['leg-back-left']['z'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegBackRightRotation['x'].oninput = function() {
+        const val = parseInt(dogLegBackRightRotation['x'].value)
+        master.dog.inRotation['leg-back-right']['x'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegBackRightRotation['y'].oninput = function() {
+        const val = parseInt(dogLegBackRightRotation['y'].value)
+        master.dog.inRotation['leg-back-right']['y'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogLegBackRightRotation['z'].oninput = function() {
+        const val = parseInt(dogLegBackRightRotation['z'].value)
+        master.dog.inRotation['leg-back-right']['z'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
         render(master)
     }
 

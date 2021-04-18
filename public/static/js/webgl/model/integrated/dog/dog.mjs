@@ -156,10 +156,25 @@ export class Dog {
             'leg-back-left': 0,
             'leg-back-right': 0
         }
+        this.inRotation = {
+            'body': {'x': 0, 'y': 0, 'z': 0},
+            'head': {'x': 0, 'y': 0, 'z': 0},
+            'neck': {'x': 0, 'y': 0, 'z': 0},
+            'tail': {'x': 0, 'y': 0, 'z': 0},
+            'ear-left': {'x': 0, 'y': 0, 'z': 0},
+            'ear-right': {'x': 0, 'y': 0, 'z': 0},
+            'leg-front-left': {'x': 0, 'y': 0, 'z': 0},
+            'leg-front-right': {'x': 0, 'y': 0, 'z': 0},
+            'leg-back-left': {'x': 0, 'y': 0, 'z': 0},
+            'leg-back-right': {'x': 0, 'y': 0, 'z': 0},
+        }
+
+        this.bodyLocation = [0, 0, 0]
 
         this.createTree()
         this.updateAnimation();
         this.updateTransform();
+        console.log(this.root)
     }
     createTree() {
         const skeletonNodes = {};
@@ -206,12 +221,31 @@ export class Dog {
         this.rotations['leg-back-right'] = -val
     }
 
+    translateModel() {
+        this.root.transform = matmul(matIdentityMat(), translateMat(this.bodyLocation[0], this.bodyLocation[1], this.bodyLocation[2]))
+    }
+
+    rotateModel() {
+        this.root.transform = matmul(matIdentityMat(), rotateMat(this.inRotation['body']['x'], this.inRotation['body']['y'], this.inRotation['body']['z'], 0, 0, 0))
+        this.root.transform = matmul(this.root.transform, translateMat(this.bodyLocation[0], this.bodyLocation[1], this.bodyLocation[2]))
+        
+        this.root.left.baseTransform = rotateMat(this.inRotation['neck']['x'], this.inRotation['neck']['y'], this.inRotation['neck']['z'], this.root.left.jointPoint[0]+this.bodyLocation[0], this.root.left.jointPoint[1]+this.bodyLocation[1], this.root.left.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.left.baseTransform = rotateMat(this.inRotation['head']['x'], this.inRotation['head']['y'], this.inRotation['head']['z'], this.root.left.left.jointPoint[0]+this.bodyLocation[0], this.root.left.left.jointPoint[1]+this.bodyLocation[1], this.root.left.left.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.left.left.baseTransform = rotateMat(this.inRotation['ear-left']['x'], this.inRotation['ear-left']['y'], this.inRotation['ear-left']['z'], this.root.left.left.left.jointPoint[0]+this.bodyLocation[0], this.root.left.left.left.jointPoint[1]+this.bodyLocation[1], this.root.left.left.left.jointPoint[2]+this.bodyLocation[2])
+        
+        this.root.left.left.left.right.baseTransform = rotateMat(this.inRotation['ear-right']['x'], this.inRotation['ear-right']['y'], this.inRotation['ear-right']['z'], this.root.left.left.left.right.jointPoint[0]+this.bodyLocation[0], this.root.left.left.left.right.jointPoint[1]+this.bodyLocation[1], this.root.left.left.left.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.baseTransform = rotateMat(this.inRotation['leg-front-left']['x'], this.inRotation['leg-front-left']['y'], this.inRotation['leg-front-left']['z'], this.root.left.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.baseTransform = rotateMat(this.inRotation['leg-front-right']['x'], this.inRotation['leg-front-right']['y'], this.inRotation['leg-front-right']['z'], this.root.left.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.right.baseTransform = rotateMat(this.inRotation['leg-back-left']['x'], this.inRotation['leg-back-left']['y'], this.inRotation['leg-back-left']['z'], this.root.left.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.right.right.baseTransform = rotateMat(this.inRotation['leg-back-right']['x'], this.inRotation['leg-back-right']['y'], this.inRotation['leg-back-right']['z'], this.root.left.right.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.right.jointPoint[2]+this.bodyLocation[2])
+    }
+
     updateAnimation() {
-        this.root.left.baseTransform = rotateMat(this.rotations['neck'], 0, 0, this.root.left.jointPoint[0], this.root.left.jointPoint[1], this.root.left.jointPoint[2])
-        this.root.left.left.baseTransform = rotateMat(this.rotations['head'], 0, 0, this.root.left.left.jointPoint[0], this.root.left.left.jointPoint[1], this.root.left.left.jointPoint[2])
-        this.root.left.right.baseTransform = rotateMat(this.rotations['leg-front-left'], 0, 0, this.root.left.right.jointPoint[0], this.root.left.right.jointPoint[1], this.root.left.right.jointPoint[2])
-        this.root.left.right.right.baseTransform = rotateMat(this.rotations['leg-front-right'], 0, 0, this.root.left.right.right.jointPoint[0], this.root.left.right.right.jointPoint[1], this.root.left.right.right.jointPoint[2])
-        this.root.left.right.right.right.baseTransform = rotateMat(this.rotations['leg-back-left'], 0, 0, this.root.left.right.right.right.jointPoint[0], this.root.left.right.right.right.jointPoint[1], this.root.left.right.right.right.jointPoint[2])
-        this.root.left.right.right.right.right.baseTransform = rotateMat(-this.rotations['leg-back-right'], 0, 0, this.root.left.right.right.right.right.jointPoint[0], this.root.left.right.right.right.right.jointPoint[1], this.root.left.right.right.right.right.jointPoint[2])
+        this.root.left.baseTransform = rotateMat(this.rotations['neck'], 0, 0, this.root.left.jointPoint[0]+this.bodyLocation[0], this.root.left.jointPoint[1]+this.bodyLocation[1], this.root.left.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.left.baseTransform = rotateMat(this.rotations['head'], 0, 0, this.root.left.left.jointPoint[0]+this.bodyLocation[0], this.root.left.left.jointPoint[1]+this.bodyLocation[1], this.root.left.left.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.baseTransform = rotateMat(this.rotations['leg-front-left'], 0, 0, this.root.left.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.baseTransform = rotateMat(this.rotations['leg-front-right'], 0, 0, this.root.left.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.right.baseTransform = rotateMat(this.rotations['leg-back-left'], 0, 0, this.root.left.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.right.right.baseTransform = rotateMat(this.rotations['leg-back-right'], 0, 0, this.root.left.right.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.right.jointPoint[2]+this.bodyLocation[2])
     }
 }
