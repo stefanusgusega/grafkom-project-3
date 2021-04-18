@@ -11,10 +11,12 @@ export class Giraffe {
 
     buildSkeleton() {
         const cubeSize = 2;
-        const bodyShape = [1, 1, 2];
-        const neckShape = [0.6, 2, 0.2];
-        const headShape = [0.6, 0.6, 0.6];
-        const legShape = [0.2, 0.6, 0.2];
+
+        const scale = 1;
+        const bodyShape = [1/scale, 1/scale, 2/scale];
+        const neckShape = [0.6/scale, 2/scale, 0.2/scale];
+        const headShape = [0.6/scale, 0.6/scale, 0.6/scale];
+        const legShape = [0.2/scale, 0.6/scale, 0.2/scale];
 
         const kScaleBody = [bodyShape[0]/cubeSize, bodyShape[1]/cubeSize, bodyShape[2]/cubeSize]
         const kScaleNeck = [neckShape[0]/cubeSize, neckShape[1]/cubeSize, neckShape[2]/cubeSize]
@@ -23,7 +25,7 @@ export class Giraffe {
 
         const translateBody = [0, 0, 0];
         const translateNeck = [0, bodyShape[1]/2 + neckShape[1]/2, -(bodyShape[2]/2 - neckShape[2]/2)];
-        const translateHead = [0, translateNeck[1] + 0.4, translateNeck[2] - neckShape[2]/2 - headShape[2]/2];
+        const translateHead = [0, translateNeck[1] + 0.4/scale, translateNeck[2] - neckShape[2]/2 - headShape[2]/2];
         const translateFrontLeg = {
             'left': [bodyShape[0]/2 - legShape[0]/2, -(bodyShape[1]/2 + legShape[1]/2), -(bodyShape[2]/2 - legShape[2]/2)],
             'right': [-(bodyShape[0]/2 - legShape[0]/2), -(bodyShape[1]/2 + legShape[1]/2), -(bodyShape[2]/2 - legShape[2]/2)],
@@ -113,6 +115,7 @@ export class Giraffe {
         this.createTree()
         this.updateAnimation();
         this.updateTransform();
+        console.log(this.root);
     }
 
     createTree() {
