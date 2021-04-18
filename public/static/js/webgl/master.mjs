@@ -1,5 +1,5 @@
 import {Giraffe} from './model/integrated/giraffe/giraffe.mjs';
-import {Bat} from './model/integrated/giraffe/Bat.mjs';
+import {Bat} from './model/integrated/Bat/Bat.mjs';
 
 export class Master {
     constructor() {
