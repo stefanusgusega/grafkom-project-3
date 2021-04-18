@@ -499,3 +499,5 @@ export function loadTexture(master, base64) {
     
     return texture;
 }
+
+// TODO: bump mapping here

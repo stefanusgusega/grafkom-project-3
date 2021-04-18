@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/css/main.css">
     <script id="shaderVs" type="x-shader/x-vertex">
-        precision mediump float;
+        precision highp float;
         attribute vec3 vertPosition;
         attribute vec3 vertNormal;
         attribute vec2 vertTexture;
         
         varying vec2 vTextureCoord;
         varying highp vec3 vLighting;
+        
+        varying vec3 w_pos;
+        varying vec3 w_nv;
+        varying vec2 o_uv;
 
         uniform mat4 mWorld;
         uniform mat4 mView;
@@ -20,7 +24,8 @@
 
         void main() {
             vTextureCoord = vertTexture;
-            gl_Position = mProj * mView * mWorld * vec4(vertPosition, 1.0);
+            vec4 worldPos = mWorld * vec4(vertPosition, 1.0);
+            gl_Position = mProj * mView * worldPos;
 
             highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
             highp vec3 directionalLightColor = vec3(1, 1, 1);
@@ -28,14 +33,27 @@
             highp vec4 transformedNormal = mNorm * vec4(vertNormal, 1);
             highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
             vLighting = ambientLight + (directionalLightColor * directional);
+            o_uv = vertTexture;
+            w_nv = normalize(mat3(mWorld) * vertNormal);
+            w_pos = worldPos.xyz;
+
         }
     </script>
     
     <script id="shaderFs" type="x-shader/x-fragment">
+        #extension GL_OES_standard_derivatives : enable
         precision mediump float;
 
         varying highp vec2 vTextureCoord;
         varying highp vec3 vLighting;
+
+        varying vec3 w_pos;
+        varying vec3 w_nv;
+        varying vec2 o_uv;
+
+        uniform vec3 u_light_pos;
+        uniform sampler2D u_diffuse;
+        uniform sampler2D u_normal_map;
 
         uniform sampler2D uSampler;
 
@@ -47,6 +65,28 @@
                 if (mode == 0) {
                     highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
                     gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
+                }
+                else if (mode == 1) {
+                    vec3 N = normalize(w_nv);
+                    vec3 dp1 = dFdx(w_pos);
+                    vec3 dp2 = dFdy(w_pos);
+                    vec2 duv1 = dFdx(o_uv);
+                    vec2 duv2 = dFdy(o_uv);
+                    vec3 dp2perp = cross(dp2, N);
+                    vec3 dp1perp = cross(N, dp1);
+                    vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
+                    vec3  B       = dp2perp * duv1.y + dp1perp * duv2.y;
+                    float invmax  = inversesqrt(max(dot(T, T), dot(B, B)));
+                    mat3  tm      = mat3(T * invmax, B * invmax, N);
+                    mat3  tbn_inv = mat3(vec3(tm[0].x, tm[1].x, tm[2].x), vec3(tm[0].y, tm[1].y, tm[2].y), vec3(tm[0].z, tm[1].z, tm[2].z));
+
+                    vec3  L    = tbn_inv * normalize(u_light_pos - w_pos);
+                    vec3  mapN = normalize(texture2D(u_normal_map, o_uv.st).xyz * 2.0 - 1.0); 
+                    float kd   = max(0.0, dot(mapN, L));
+
+                    vec3 color     = texture2D(u_diffuse, o_uv.st).rgb;
+                    vec3 light_col = (0.0 + kd) * color.rgb;
+                    gl_FragColor   = vec4(clamp(light_col, 0.0, 1.0), 1.0);
                 }
             } else {
                 highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
