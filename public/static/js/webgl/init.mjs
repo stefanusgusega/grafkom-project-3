@@ -7,6 +7,7 @@ import {DogRenderer} from './renderer/dog.mjs'
 export function init(master) {
     master.canvas = document.getElementById('glCanvas');
     master.gl = master.canvas.getContext('webgl');
+    var standard_derivatives = master.gl.getExtension("OES_standard_derivatives");
 
     if (!master.gl) throw new Error('Web GL Not Supported');
 
