@@ -194,7 +194,7 @@ export class Dog {
         this.root.left.right.right.baseTransform = rotateMat(-this.rotation, 0, 0, this.root.left.right.right.jointPoint[0], this.root.left.right.right.jointPoint[1], this.root.left.right.right.jointPoint[2])
         this.root.left.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.jointPoint[0], this.root.left.right.right.right.jointPoint[1], this.root.left.right.right.right.jointPoint[2])
         this.root.left.right.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.right.jointPoint[0], this.root.left.right.right.right.right.jointPoint[1], this.root.left.right.right.right.right.jointPoint[2])
-        this.root.left.right.right.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.right.right.jointPoint[0], this.root.left.right.right.right.right.right.jointPoint[1], this.root.left.right.right.right.right.right.jointPoint[2])
+        // this.root.left.right.right.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.right.right.jointPoint[0], this.root.left.right.right.right.right.right.jointPoint[1], this.root.left.right.right.right.right.right.jointPoint[2])
 
     }
 }
