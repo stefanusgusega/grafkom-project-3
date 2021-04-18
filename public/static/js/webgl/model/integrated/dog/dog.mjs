@@ -144,7 +144,18 @@ export class Dog {
             'leg-back-right': getNormalCube(this.skeletons['leg-back-right']),
         }
 
-        this.rotation = 0;
+        this.rotations = {
+            'body': 0,
+            'head': 0,
+            'neck': 0,
+            'tail': 0,
+            'ear-left': 0,
+            'ear-right': 0,
+            'leg-front-left': 0,
+            'leg-front-right': 0,
+            'leg-back-left': 0,
+            'leg-back-right': 0
+        }
 
         this.createTree()
         this.updateAnimation();
@@ -187,14 +198,20 @@ export class Dog {
         }
     }
 
-    updateAnimation() {
-        this.root.transform = rotateMat(this.rotation, 0, 0, this.root.jointPoint[0], this.root.jointPoint[1], this.root.jointPoint[2]);
-        this.root.left.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.jointPoint[0], this.root.left.jointPoint[1], this.root.left.jointPoint[2])
-        this.root.left.right.baseTransform = rotateMat(-this.rotation, 0, 0, this.root.left.right.jointPoint[0], this.root.left.right.jointPoint[1], this.root.left.right.jointPoint[2])
-        this.root.left.right.right.baseTransform = rotateMat(-this.rotation, 0, 0, this.root.left.right.right.jointPoint[0], this.root.left.right.right.jointPoint[1], this.root.left.right.right.jointPoint[2])
-        this.root.left.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.jointPoint[0], this.root.left.right.right.right.jointPoint[1], this.root.left.right.right.right.jointPoint[2])
-        this.root.left.right.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.right.jointPoint[0], this.root.left.right.right.right.right.jointPoint[1], this.root.left.right.right.right.right.jointPoint[2])
-        // this.root.left.right.right.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.right.right.jointPoint[0], this.root.left.right.right.right.right.right.jointPoint[1], this.root.left.right.right.right.right.right.jointPoint[2])
+    distributeRotation(val) {
+        this.rotations['neck'] = val/2
+        this.rotations['leg-front-left'] = val
+        this.rotations['leg-front-right'] = -val
+        this.rotations['leg-back-left'] = val
+        this.rotations['leg-back-right'] = -val
+    }
 
+    updateAnimation() {
+        this.root.left.baseTransform = rotateMat(this.rotations['neck'], 0, 0, this.root.left.jointPoint[0], this.root.left.jointPoint[1], this.root.left.jointPoint[2])
+        this.root.left.left.baseTransform = rotateMat(this.rotations['head'], 0, 0, this.root.left.left.jointPoint[0], this.root.left.left.jointPoint[1], this.root.left.left.jointPoint[2])
+        this.root.left.right.baseTransform = rotateMat(this.rotations['leg-front-left'], 0, 0, this.root.left.right.jointPoint[0], this.root.left.right.jointPoint[1], this.root.left.right.jointPoint[2])
+        this.root.left.right.right.baseTransform = rotateMat(this.rotations['leg-front-right'], 0, 0, this.root.left.right.right.jointPoint[0], this.root.left.right.right.jointPoint[1], this.root.left.right.right.jointPoint[2])
+        this.root.left.right.right.right.baseTransform = rotateMat(this.rotations['leg-back-left'], 0, 0, this.root.left.right.right.right.jointPoint[0], this.root.left.right.right.right.jointPoint[1], this.root.left.right.right.right.jointPoint[2])
+        this.root.left.right.right.right.right.baseTransform = rotateMat(-this.rotations['leg-back-right'], 0, 0, this.root.left.right.right.right.right.jointPoint[0], this.root.left.right.right.right.right.jointPoint[1], this.root.left.right.right.right.right.jointPoint[2])
     }
 }

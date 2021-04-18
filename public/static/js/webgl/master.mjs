@@ -14,6 +14,8 @@ export class Master {
         this.vNormal;
         this.vTexture;
 
+        this.worldMatrix;
+
         this.eye = [0, 0, -8];
         this.center = [0, 0, 0];
         this.up = [0, 1, 0];

@@ -1,5 +1,5 @@
 import {initShaders} from './utils/initShaders.mjs';
-import {transpose, inverse, translationTranspos, matIdentity, matLookAt, matPerspective, matOblique, matOrtho, matmul, degToRad, arrToMat, flatten2D} from './utils/util.mjs';
+import {transpose, inverse, translationTranspos, matIdentity, matLookAt, matPerspective, matOblique, matOrtho, matmul, degToRad, arrToMat, flatten2D, rotateMat} from './utils/util.mjs';
 import {render} from './render.mjs';
 import {GiraffesRenderer} from './renderer/giraffe.mjs'
 import {DogRenderer} from './renderer/dog.mjs'
@@ -7,8 +7,6 @@ import {DogRenderer} from './renderer/dog.mjs'
 export function init(master) {
     master.canvas = document.getElementById('glCanvas');
     master.gl = master.canvas.getContext('webgl');
-    var standard_derivatives = master.gl.getExtension("OES_standard_derivatives");
-    const canvas_size = 640;
 
     if (!master.gl) throw new Error('Web GL Not Supported');
 
@@ -46,10 +44,10 @@ export function init(master) {
     master.matLightPosLocation = master.gl.getUniformLocation(master.gl.program, 'u_light_pos');
 
     
-    var worldMatrix = matIdentity();
+    master.worldMatrix = matIdentity();
     var viewMatrix = matLookAt(master.eye, master.center, master.up);
     var projMatrix = matPerspective(degToRad(45), 640/640, 0.1, 1000.0);
-    var normMatrix = transpose(inverse(flatten2D(matmul(arrToMat(viewMatrix), arrToMat(worldMatrix)))));
+    var normMatrix = transpose(inverse(flatten2D(matmul(arrToMat(viewMatrix), arrToMat(master.worldMatrix)))));
 
     const value_shadeButton = document.getElementById('shade').value;
     if (value_shadeButton == "On") {
@@ -58,7 +56,7 @@ export function init(master) {
         master.gl.uniform1i(master.shadeMode, 0);  
     }
 
-    master.gl.uniformMatrix4fv(master.matWorldUniformLocation, false, worldMatrix);
+    master.gl.uniformMatrix4fv(master.matWorldUniformLocation, false, master.worldMatrix);
 	master.gl.uniformMatrix4fv(master.matViewUniformLocation, false, viewMatrix);
     master.gl.uniformMatrix4fv(master.matProjUniformLocation, false, projMatrix);
     master.gl.uniformMatrix4fv(master.matNormLocation, false, normMatrix);
@@ -96,13 +94,17 @@ function updateProj(master) {
 }
 
 function updateWorld(master) {
-    const worldMatrix = new Float32Array([
+    const update = new Float32Array([
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         master.movement[0], master.movement[1], master.movement[2], 1
     ]);
-    master.gl.uniformMatrix4fv(master.matWorldUniformLocation, false, worldMatrix);
+    master.worldMatrix = matIdentity()
+    master.worldMatrix = matmul(arrToMat(update), arrToMat(master.worldMatrix))
+    master.worldMatrix = flatten2D(matmul(rotateMat(master.cameraRotation[0], master.cameraRotation[1], master.cameraRotation[2], 0, 0, 0), master.worldMatrix))
+
+    master.gl.uniformMatrix4fv(master.matWorldUniformLocation, false, master.worldMatrix);
 }
 
 function events(master) {
@@ -143,6 +145,19 @@ function events(master) {
 
     const giraffeButton = document.getElementById('giraffeAnimate');
     const dogButton = document.getElementById('dogAnimate')
+
+    rotationCamera['x'].oninput = function() {
+        master.cameraRotation[0] = parseInt(rotationCamera['x'].value);
+        updateWorld(master);
+        render(master);
+    };
+
+    rotationCamera['y'].oninput = function() {
+        master.cameraRotation[1] = parseInt(rotationCamera['y'].value);
+        updateWorld(master);
+        render(master);
+    };
+
     movement['x'].oninput = function() {
         master.movement[0] = parseInt(movement['x'].value);
         updateWorld(master);
@@ -217,7 +232,7 @@ function events(master) {
 
     animation['giraffe'].oninput = function() {
         const val = parseInt(animation['giraffe'].value);
-        master.giraffe.rotation = val;
+        master.giraffe.distributeRotation(val)
         master.giraffe.updateAnimation();
         master.giraffe.updateTransform();
         render(master);
@@ -225,7 +240,7 @@ function events(master) {
 
     animation['dog'].oninput = function() {
         const val = parseInt(animation['dog'].value);
-        master.dog.rotation = val;
+        master.dog.distributeRotation(val)
         master.dog.updateAnimation();
         master.dog.updateTransform();
         render(master);
@@ -305,7 +320,8 @@ function events(master) {
                 }
             }
 
-            master.giraffe.rotation = now;
+            
+            master.giraffe.distributeRotation(now)
             master.giraffe.updateAnimation();
             master.giraffe.updateTransform();
             animation['giraffe'].value = now;
@@ -338,7 +354,7 @@ function events(master) {
                 }
             }
 
-            master.dog.rotation = now;
+            master.dog.distributeRotation(now)
             master.dog.updateAnimation();
             master.dog.updateTransform();
             animation['dog'].value = now;
