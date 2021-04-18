@@ -25,6 +25,7 @@ export class Master {
         this.giraffe = new Giraffe();
         this.dog = new Dog();
         this.isStartGiraffeAnimation = false;
+        this.isStartDogAnimation = false;
         this.renderer = {}
 
         this.matWorldUniformLocation;

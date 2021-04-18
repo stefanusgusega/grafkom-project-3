@@ -2,6 +2,7 @@ import {initShaders} from './utils/initShaders.mjs';
 import {transpose, inverse, translationTranspos, matIdentity, matLookAt, matPerspective, matOblique, matOrtho, matmul, degToRad, arrToMat, flatten2D} from './utils/util.mjs';
 import {render} from './render.mjs';
 import {GiraffesRenderer} from './renderer/giraffe.mjs'
+import {DogRenderer} from './renderer/dog.mjs'
 
 export function init(master) {
     master.canvas = document.getElementById('glCanvas');
@@ -67,6 +68,7 @@ export function init(master) {
     master.gl.uniform1i(master.matNormMapLocation, 0.5);
     
     master.renderer['giraffe'] = new GiraffesRenderer(master);
+    master.renderer['dog'] = new DogRenderer(master);
     
     events(master);
     render(master);
@@ -130,6 +132,7 @@ function events(master) {
     }
     const animation = {
         'giraffe': document.getElementById('giraffeRot'),
+        'dog' : document.getElementById('dogRot')
     }
 
     const resetButton = document.getElementById('reset');
@@ -139,7 +142,7 @@ function events(master) {
     const shadeButoon = document.getElementById('shade');
 
     const giraffeButton = document.getElementById('giraffeAnimate');
-    
+    const dogButton = document.getElementById('dogAnimate')
     movement['x'].oninput = function() {
         master.movement[0] = parseInt(movement['x'].value);
         updateWorld(master);
@@ -219,6 +222,14 @@ function events(master) {
         master.giraffe.updateTransform();
         render(master);
     };
+
+    animation['dog'].oninput = function() {
+        const val = parseInt(animation['dog'].value);
+        master.dog.rotation = val;
+        master.dog.updateAnimation();
+        master.dog.updateTransform();
+        render(master);
+    }
     
     shadeButoon.addEventListener("click", function(){
         const value_shadeButton = document.getElementById('shade').value;
@@ -304,5 +315,38 @@ function events(master) {
 
         master.isStartGiraffeAnimation = !master.isStartGiraffeAnimation;
         if (master.isStartGiraffeAnimation) requestAnimationFrame(animate);
+    });
+
+    dogButton.addEventListener("click", function() {
+        var now = parseInt(animation['dog'].value);
+        var markUp = true;
+        var markDown = false;
+        function animate() {
+            master.renderer['dog'].render();
+            if (markUp) {
+                now++;
+                if (now == 20) {
+                    markUp = false;
+                    markDown = true;
+                }
+            }
+            if (markDown) {
+                now--;
+                if (now == -20) {
+                    markUp = true;
+                    markDown = false;
+                }
+            }
+
+            master.dog.rotation = now;
+            master.dog.updateAnimation();
+            master.dog.updateTransform();
+            animation['dog'].value = now;
+            
+            if (master.isStartDogAnimation) requestAnimationFrame(animate);
+        }
+
+        master.isStartDogAnimation = !master.isStartDogAnimation;
+        if (master.isStartDogAnimation) requestAnimationFrame(animate);
     });
 }
