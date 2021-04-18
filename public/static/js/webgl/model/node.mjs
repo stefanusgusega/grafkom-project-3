@@ -4,7 +4,6 @@ import {matIdentityMat} from './../utils/util.mjs';
 export class Node {
     constructor(transform, jointPoint, center, vertices, indices, color, normal, texture, textureCoord, left, right, name) {
         this.name = name;
-        // this.childs = childs;
         this.left = left;
         this.right = right;
         this.center = center;
