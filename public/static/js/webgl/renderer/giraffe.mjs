@@ -17,7 +17,7 @@ export class GiraffesRenderer {
         if (node.right) this.render(node.right);
         if (node.left) this.render(node.left);
 
-        this.master.gl.uniform1i(this.master.mappingMode, 1);
+        this.master.gl.uniform1i(this.master.mappingMode, 0);
         const vertex = this.master.gl.createBuffer();
         const textureCoord = this.master.gl.createBuffer();
         const normal = this.master.gl.createBuffer();
