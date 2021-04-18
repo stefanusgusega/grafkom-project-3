@@ -113,6 +113,41 @@ function events(master) {
         'x': document.getElementById('cameraRotateX'),
         'y': document.getElementById('cameraRotateY'),
     }
+    const giraffeTranslation = {
+        'x': document.getElementById('gTx'),
+        'y': document.getElementById('gTy'),
+        'z': document.getElementById('gTz')
+    }
+    const giraffeNeckRotation = {
+        'x': document.getElementById('gRNx'),
+        'y': document.getElementById('gRNy'),
+        'z': document.getElementById('gRNz')
+    }
+    const giraffeHeadRotation = {
+        'x': document.getElementById('gHx'),
+        'y': document.getElementById('gHy'),
+        'z': document.getElementById('gHz')
+    }
+    const giraffeLegFrontLeftRotation = {
+        'x': document.getElementById('gLFLx'),
+        'y': document.getElementById('gLFLy'),
+        'z': document.getElementById('gLFLz')
+    }
+    const giraffeLegFrontRightRotation = {
+        'x': document.getElementById('gLFRx'),
+        'y': document.getElementById('gLFRy'),
+        'z': document.getElementById('gLFRz')
+    }
+    const giraffeLegBackLeftRotation = {
+        'x': document.getElementById('gLBLx'),
+        'y': document.getElementById('gLBLy'),
+        'z': document.getElementById('gLBLz')
+    }
+    const giraffeLegBackRightRotation = {
+        'x': document.getElementById('gLBRx'),
+        'y': document.getElementById('gLBRy'),
+        'z': document.getElementById('gLBRz')
+    }
     const movement = {
         'x': document.getElementById('movex'),
         'y': document.getElementById('movey'),
@@ -229,6 +264,174 @@ function events(master) {
         master.up[2] = parseInt(up['z'].value);
         updateView(master);
         render(master);
+    }
+
+    giraffeTranslation['x'].oninput = function() {
+        const val = parseInt(giraffeTranslation['x'].value)
+        master.giraffe.bodyLocation[0] = val
+        master.giraffe.translateModel()
+        master.giraffe.updateTransform()
+        render(master);
+    }
+
+    giraffeTranslation['y'].oninput = function() {
+        const val = parseInt(giraffeTranslation['y'].value)
+        master.giraffe.bodyLocation[1] = val
+        master.giraffe.translateModel()
+        master.giraffe.updateTransform()
+        render(master);
+    }
+
+    giraffeTranslation['z'].oninput = function() {
+        const val = parseInt(giraffeTranslation['z'].value)
+        master.giraffe.bodyLocation[2] = val
+        master.giraffe.translateModel()
+        master.giraffe.updateTransform()
+        render(master);
+    }
+
+    giraffeNeckRotation['x'].oninput = function() {
+        const val = parseInt(giraffeNeckRotation['x'].value)
+        master.giraffe.inRotation['neck']['x'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeNeckRotation['y'].oninput = function() {
+        const val = parseInt(giraffeNeckRotation['y'].value)
+        master.giraffe.inRotation['neck']['y'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeNeckRotation['z'].oninput = function() {
+        const val = parseInt(giraffeNeckRotation['z'].value)
+        master.giraffe.inRotation['neck']['z'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeHeadRotation['x'].oninput = function() {
+        const val = parseInt(giraffeHeadRotation['x'].value)
+        master.giraffe.inRotation['head']['x'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeHeadRotation['y'].oninput = function() {
+        const val = parseInt(giraffeHeadRotation['y'].value)
+        master.giraffe.inRotation['head']['y'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeHeadRotation['z'].oninput = function() {
+        const val = parseInt(giraffeHeadRotation['z'].value)
+        master.giraffe.inRotation['head']['z'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegFrontLeftRotation['x'].oninput = function() {
+        const val = parseInt(giraffeLegFrontLeftRotation['x'].value)
+        master.giraffe.inRotation['leg-front-left']['x'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegFrontLeftRotation['y'].oninput = function() {
+        const val = parseInt(giraffeLegFrontLeftRotation['y'].value)
+        master.giraffe.inRotation['leg-front-left']['y'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegFrontLeftRotation['z'].oninput = function() {
+        const val = parseInt(giraffeLegFrontLeftRotation['z'].value)
+        master.giraffe.inRotation['leg-front-left']['z'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegFrontRightRotation['x'].oninput = function() {
+        const val = parseInt(giraffeLegFrontRightRotation['x'].value)
+        master.giraffe.inRotation['leg-front-right']['x'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegFrontRightRotation['y'].oninput = function() {
+        const val = parseInt(giraffeLegFrontRightRotation['y'].value)
+        master.giraffe.inRotation['leg-front-right']['y'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegFrontRightRotation['z'].oninput = function() {
+        const val = parseInt(giraffeLegFrontRightRotation['z'].value)
+        master.giraffe.inRotation['leg-front-right']['z'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegBackLeftRotation['x'].oninput = function() {
+        const val = parseInt(giraffeLegBackLeftRotation['x'].value)
+        master.giraffe.inRotation['leg-back-left']['x'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegBackLeftRotation['y'].oninput = function() {
+        const val = parseInt(giraffeLegBackLeftRotation['y'].value)
+        master.giraffe.inRotation['leg-back-left']['y'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegBackLeftRotation['z'].oninput = function() {
+        const val = parseInt(giraffeLegBackLeftRotation['z'].value)
+        master.giraffe.inRotation['leg-back-left']['z'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegBackRightRotation['x'].oninput = function() {
+        const val = parseInt(giraffeLegBackRightRotation['x'].value)
+        master.giraffe.inRotation['leg-back-right']['x'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegBackRightRotation['y'].oninput = function() {
+        const val = parseInt(giraffeLegBackRightRotation['y'].value)
+        master.giraffe.inRotation['leg-back-right']['y'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegBackRightRotation['z'].oninput = function() {
+        const val = parseInt(giraffeLegBackRightRotation['z'].value)
+        master.giraffe.inRotation['leg-back-right']['z'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
     }
 
     animation['giraffe'].oninput = function() {
