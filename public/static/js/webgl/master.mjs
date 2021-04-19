@@ -1,5 +1,6 @@
 import {Giraffe} from './model/integrated/giraffe/giraffe.mjs';
 import {Bat} from './model/integrated/Bat/Bat.mjs';
+import {Dog} from './model/integrated/dog/dog.mjs';
 
 export class Master {
     constructor() {
@@ -27,6 +28,8 @@ export class Master {
         this.isStartGiraffeAnimation = false;
         this.Bat = new Bat();
         this.isStartBatAnimation = false;
+        this.dog = new Dog();
+        this.isStartDogAnimation = false;
         this.renderer = {}
 
         this.matWorldUniformLocation;
