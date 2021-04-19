@@ -2,7 +2,7 @@ import {matIdentityMat} from './../utils/util.mjs';
 
 
 export class Node {
-    constructor(transform, jointPoint, center, vertices, indices, color, normal, texture, textureCoord, left, right, name) {
+    constructor(transform, jointPoint, center, vertices, indices, color, normal, tangent, bitangent, texture, textureCoord, left, right, name) {
         this.name = name;
         this.left = left;
         this.right = right;
@@ -16,6 +16,8 @@ export class Node {
             'vertices': vertices,
             'indices': indices,
             'normal': normal,
+            'tangent': tangent,
+            'bitangent': bitangent,
             'texture': texture,
             'textureCoord': textureCoord,
         }

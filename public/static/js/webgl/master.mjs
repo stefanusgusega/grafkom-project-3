@@ -12,6 +12,8 @@ export class Master {
         this.vPosition;
         this.vColor;
         this.vNormal;
+        this.vTangent;
+        this.vBitangent;
         this.vTexture;
 
         this.worldMatrix;

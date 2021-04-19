@@ -1,4 +1,4 @@
-import {defCube, color, changeColor, indicesCube, cubeTextureCoordinates, getNormalCube} from './../../base/cube.mjs';
+import {defCube, color, changeColor, indicesCube, cubeTextureCoordinates, getNormalCube, getTangentCube, getBitangentCube} from './../../base/cube.mjs';
 import {rotateMat, translateMat, scaleMat, matmul, matIdentityMat, transformBlock, changeBlockColor, scaleBlock, flatten2D, translateBlock, rotateBlock, vertToMatrix, matIdentity} from './../../../utils/util.mjs';
 import {Node} from './../../node.mjs';
 import {texture} from './textures.mjs';
@@ -110,6 +110,26 @@ export class Giraffe {
             'leg-back-right': getNormalCube(this.skeletons['leg-back-right']),
         }
 
+        this.tangents = {
+            'body': getTangentCube(this.skeletons['body']),
+            'head': getTangentCube(this.skeletons['head']),
+            'neck': getTangentCube(this.skeletons['neck']),
+            'leg-front-left': getTangentCube(this.skeletons['leg-front-left']),
+            'leg-front-right': getTangentCube(this.skeletons['leg-front-right']),
+            'leg-back-left': getTangentCube(this.skeletons['leg-back-left']),
+            'leg-back-right': getTangentCube(this.skeletons['leg-back-right']),
+        }
+
+        this.bitangents = {
+            'body': getBitangentCube(this.skeletons['body']),
+            'head': getBitangentCube(this.skeletons['head']),
+            'neck': getBitangentCube(this.skeletons['neck']),
+            'leg-front-left': getBitangentCube(this.skeletons['leg-front-left']),
+            'leg-front-right': getBitangentCube(this.skeletons['leg-front-right']),
+            'leg-back-left': getBitangentCube(this.skeletons['leg-back-left']),
+            'leg-back-right': getBitangentCube(this.skeletons['leg-back-right']),
+        }
+
         this.rotations = {
             'body': 0,
             'head': 0,
@@ -140,7 +160,7 @@ export class Giraffe {
 
     createTree() {
         const skeletonNodes = {};
-        for (var k in this.skeletons) skeletonNodes[k] = new Node(matIdentityMat(), this.jointPoints[k], this.centers[k], this.skeletons[k], indicesCube, this.colors[k], this.normals[k], this.textures[k], this.textureCoords[k], null, null, k);
+        for (var k in this.skeletons) skeletonNodes[k] = new Node(matIdentityMat(), this.jointPoints[k], this.centers[k], this.skeletons[k], indicesCube, this.colors[k], this.normals[k], this.tangents[k], this.bitangents[k], this.textures[k], this.textureCoords[k], null, null, k);
 
         this.root = skeletonNodes['body'];
         this.root.left = skeletonNodes['neck'];
@@ -154,15 +174,21 @@ export class Giraffe {
     updateTransform(node=this.root) {
         node.render['vertices'] = transformBlock(node.defVertices, node.transform);
         node.render['normal'] = getNormalCube(node.render['vertices']);
+        node.render['tangent'] = getTangentCube(node.render['vertices']);
+        node.render['bitangent'] = getBitangentCube(node.render['vertices']);
         if (node.left) {
             node.left.transform = matmul(node.left.baseTransform, node.transform);
             node.left.render['vertices'] = transformBlock(node.left.defVertices, node.left.transform);
             node.left.render['normal'] = getNormalCube(node.left.render['vertices']);
+            node.left.render['tangent'] = getTangentCube(node.left.render['vertices']);
+            node.left.render['bitangent'] = getBitangentCube(node.left.render['vertices']);
             var siblingNode = node.left.right;
             while (siblingNode) {
                 siblingNode.transform = matmul(siblingNode.baseTransform, node.transform);
                 siblingNode.render['vertices'] = transformBlock(siblingNode.defVertices, siblingNode.transform);
                 siblingNode.render['normal'] = getNormalCube(siblingNode.render['vertices']);
+                siblingNode.render['tangent'] = getTangentCube(siblingNode.render['vertices']);
+                siblingNode.render['bitangent'] = getBitangentCube(siblingNode.render['vertices']);
                 if (siblingNode.left) {
                     this.updateTransform(siblingNode.left);
                 }

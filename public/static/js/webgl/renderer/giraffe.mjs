@@ -21,6 +21,8 @@ export class GiraffesRenderer {
         const vertex = this.master.gl.createBuffer();
         const textureCoord = this.master.gl.createBuffer();
         const normal = this.master.gl.createBuffer();
+        const tangent = this.master.gl.createBuffer();
+        const bitangent = this.master.gl.createBuffer();
         const indices = this.master.gl.createBuffer();
 
         this.master.gl.bindBuffer(this.master.gl.ARRAY_BUFFER, vertex)
@@ -37,6 +39,16 @@ export class GiraffesRenderer {
         this.master.gl.bufferData(this.master.gl.ARRAY_BUFFER, node.render['normal'], this.master.gl.STATIC_DRAW);
         this.master.gl.vertexAttribPointer(this.master.vNormal, 3, this.master.gl.FLOAT, false, 0, 0);
         this.master.gl.enableVertexAttribArray(this.master.vNormal);
+
+        this.master.gl.bindBuffer(this.master.gl.ARRAY_BUFFER, tangent)
+        this.master.gl.bufferData(this.master.gl.ARRAY_BUFFER, node.render['tangent'], this.master.gl.STATIC_DRAW);
+        this.master.gl.vertexAttribPointer(this.master.vTangent, 3, this.master.gl.FLOAT, false, 0, 0);
+        this.master.gl.enableVertexAttribArray(this.master.vTangent);
+
+        this.master.gl.bindBuffer(this.master.gl.ARRAY_BUFFER, bitangent)
+        this.master.gl.bufferData(this.master.gl.ARRAY_BUFFER, node.render['bitangent'], this.master.gl.STATIC_DRAW);
+        this.master.gl.vertexAttribPointer(this.master.vBitangent, 3, this.master.gl.FLOAT, false, 0, 0);
+        this.master.gl.enableVertexAttribArray(this.master.vBitangent);
 
         this.master.gl.bindBuffer(this.master.gl.ELEMENT_ARRAY_BUFFER, indices)
         this.master.gl.bufferData(this.master.gl.ELEMENT_ARRAY_BUFFER, node.render['indices'], this.master.gl.STATIC_DRAW);

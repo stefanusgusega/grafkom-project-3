@@ -32,6 +32,8 @@ export function init(master) {
     master.vColor = master.gl.getAttribLocation(master.gl.program, 'vertColor');
     master.vNormal = master.gl.getAttribLocation(master.gl.program, 'vertNormal');
     master.vTexture = master.gl.getAttribLocation(master.gl.program, 'vertTexture');
+    master.vTangent = master.gl.getAttribLocation(master.gl.program, 'vertTangent');
+    master.vBitangent = master.gl.getAttribLocation(master.gl.program, 'vertBitangent');
 
     master.matWorldUniformLocation = master.gl.getUniformLocation(master.gl.program, 'mWorld');
 	master.matViewUniformLocation = master.gl.getUniformLocation(master.gl.program, 'mView');
@@ -40,15 +42,18 @@ export function init(master) {
     master.matUSamplerLocation = master.gl.getUniformLocation(master.gl.program, 'uSampler');
     master.mappingMode = master.gl.getUniformLocation(master.gl.program, 'mode');
     master.shadeMode = master.gl.getUniformLocation(master.gl.program, 'stateShade');
-    master.matDiffuseLocation = master.gl.getUniformLocation(master.gl.program, 'u_diffuse');
-    master.matNormMapLocation = master.gl.getUniformLocation(master.gl.program, 'u_normal_map');
-    master.matLightPosLocation = master.gl.getUniformLocation(master.gl.program, 'u_light_pos');
+    master.matNormalBumpLocation = master.gl.getUniformLocation(master.gl.program, 'normalMatrix');
 
     
     master.worldMatrix = matIdentity();
     var viewMatrix = matLookAt(master.eye, master.center, master.up);
     var projMatrix = matPerspective(degToRad(45), 640/640, 0.1, 1000.0);
     var normMatrix = transpose(inverse(flatten2D(matmul(arrToMat(viewMatrix), arrToMat(master.worldMatrix)))));
+    var normBumpMatrix = new Float32Array([
+        viewMatrix[0], viewMatrix[1], viewMatrix[2],
+        viewMatrix[3], viewMatrix[4], viewMatrix[5],
+        viewMatrix[6], viewMatrix[7], viewMatrix[8]
+    ])
 
     const value_shadeButton = document.getElementById('shade').value;
     if (value_shadeButton == "On") {
@@ -63,8 +68,7 @@ export function init(master) {
     master.gl.uniformMatrix4fv(master.matNormLocation, false, normMatrix);
     master.gl.uniform1i(master.matUSamplerLocation, 0);
     // bump mapping
-    master.gl.uniform1i(master.matDiffuseLocation, 0.5);
-    master.gl.uniform1i(master.matNormMapLocation, 0.5);
+    master.gl.uniformMatrix3fv(master.matNormalBumpLocation, false, normBumpMatrix);
     
     master.renderer['giraffe'] = new GiraffesRenderer(master);
     master.renderer['dog'] = new DogRenderer(master);
@@ -118,6 +122,11 @@ function events(master) {
         'y': document.getElementById('gTy'),
         'z': document.getElementById('gTz')
     }
+    const giraffeBodyRotation = {
+        'x': document.getElementById('gBx'),
+        'y': document.getElementById('gBy'),
+        'z': document.getElementById('gBz')
+    }
     const giraffeNeckRotation = {
         'x': document.getElementById('gRNx'),
         'y': document.getElementById('gRNy'),
@@ -152,6 +161,11 @@ function events(master) {
         'x': document.getElementById('dTx'),
         'y': document.getElementById('dTy'),
         'z': document.getElementById('dTz')
+    }
+    const dogBodyRotation = {
+        'x': document.getElementById('dBx'),
+        'y': document.getElementById('dBy'),
+        'z': document.getElementById('dBz')
     }
     const dogNeckRotation = {
         'x': document.getElementById('dRNx'),
@@ -325,6 +339,30 @@ function events(master) {
         render(master);
     }
 
+    giraffeBodyRotation['x'].oninput = function() {
+        const val = parseInt(giraffeBodyRotation['x'].value)
+        master.giraffe.inRotation['body']['x'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeBodyRotation['y'].oninput = function() {
+        const val = parseInt(giraffeBodyRotation['y'].value)
+        master.giraffe.inRotation['body']['y'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeBodyRotation['z'].oninput = function() {
+        const val = parseInt(giraffeBodyRotation['z'].value)
+        master.giraffe.inRotation['body']['z'] = val
+        master.giraffe.rotateModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
     giraffeNeckRotation['x'].oninput = function() {
         const val = parseInt(giraffeNeckRotation['x'].value)
         master.giraffe.inRotation['neck']['x'] = val
@@ -484,6 +522,31 @@ function events(master) {
         master.dog.updateTransform()
         render(master);
     }
+
+    dogBodyRotation['x'].oninput = function() {
+        const val = parseInt(dogBodyRotation['x'].value)
+        master.dog.inRotation['body']['x'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+
+    dogBodyRotation['y'].oninput = function() {
+        const val = parseInt(dogBodyRotation['y'].value)
+        master.dog.inRotation['body']['y'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+
+    dogBodyRotation['z'].oninput = function() {
+        const val = parseInt(dogBodyRotation['z'].value)
+        master.dog.inRotation['body']['z'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+
     
     dogNeckRotation['x'].oninput = function() {
         const val = parseInt(dogNeckRotation['x'].value)

@@ -178,3 +178,45 @@ export function getNormalCube(block) {
     }
     return new Float32Array(ret);
 }
+
+export function getTangentCube(block) {
+    var ret = []
+    for (var i = 0; i < block.length; i += 12) {
+        var p2 = [block[i], block[i+1], block[i+2]];
+        var p1 = [block[i+3], block[i+4], block[i+5]];
+
+        var tangent = normalize([
+            p2[0]-p1[0],
+            p2[1]-p1[1],
+            p2[2]-p1[2]
+        ])
+
+        for (var j = 0; j < 4; ++j) {
+            ret.push(tangent[0])
+            ret.push(tangent[1])
+            ret.push(tangent[2])
+        } 
+    }
+    return new Float32Array(ret);
+}
+
+export function getBitangentCube(block) {
+    var ret = []
+    for (var i = 0; i < block.length; i += 12) {
+        var p3 = [block[i+6], block[i+7], block[i+8]];
+        var p1 = [block[i+3], block[i+4], block[i+5]];
+
+        var tangent = normalize([
+            p3[0]-p1[0],
+            p3[1]-p1[1],
+            p3[2]-p1[2]
+        ])
+
+        for (var j = 0; j < 4; ++j) {
+            ret.push(tangent[0])
+            ret.push(tangent[1])
+            ret.push(tangent[2])
+        } 
+    }
+    return new Float32Array(ret);
+}
