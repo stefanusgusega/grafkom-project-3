@@ -153,7 +153,7 @@ export class Giraffe {
         this.bodyLocation = [0, 0, 0]
 
         this.createTree()
-        this.translateModel(1, 1, 1)
+        this.translateModel()
         this.updateAnimation();
         this.updateTransform();
     }
@@ -211,8 +211,8 @@ export class Giraffe {
     }
 
     rotateModel() {
-        this.root.transform = matmul(matIdentityMat(), rotateMat(this.inRotation['body']['x'], this.inRotation['body']['y'], this.inRotation['body']['z'], 0, 0, 0))
-        this.root.transform = matmul(this.root.transform, translateMat(this.bodyLocation[0], this.bodyLocation[1], this.bodyLocation[2]))
+        this.root.transform = matmul(matIdentityMat(), translateMat(this.bodyLocation[0], this.bodyLocation[1], this.bodyLocation[2]))
+        this.root.transform = matmul(this.root.transform, rotateMat(this.inRotation['body']['x'], this.inRotation['body']['y'], this.inRotation['body']['z'], 0, 0, 0))
         
         this.root.left.baseTransform = rotateMat(this.inRotation['neck']['x'], this.inRotation['neck']['y'], this.inRotation['neck']['z'], this.root.left.jointPoint[0]+this.bodyLocation[0], this.root.left.jointPoint[1]+this.bodyLocation[1], this.root.left.jointPoint[2]+this.bodyLocation[2])
         this.root.left.left.baseTransform = rotateMat(this.inRotation['head']['x'], this.inRotation['head']['y'], this.inRotation['head']['z'], this.root.left.left.jointPoint[0]+this.bodyLocation[0], this.root.left.left.jointPoint[1]+this.bodyLocation[1], this.root.left.left.jointPoint[2]+this.bodyLocation[2])
