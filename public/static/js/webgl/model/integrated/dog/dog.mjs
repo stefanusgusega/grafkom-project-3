@@ -211,6 +211,7 @@ export class Dog {
             }
             this.updateTransform(node.left);
         }
+        console.log('updt transform')
     }
 
     distributeRotation(val) {
@@ -219,6 +220,7 @@ export class Dog {
         this.rotations['leg-front-right'] = -val
         this.rotations['leg-back-left'] = val
         this.rotations['leg-back-right'] = -val
+        this.rotations['tail'] = val
     }
 
     translateModel() {
@@ -238,6 +240,8 @@ export class Dog {
         this.root.left.right.right.baseTransform = rotateMat(this.inRotation['leg-front-right']['x'], this.inRotation['leg-front-right']['y'], this.inRotation['leg-front-right']['z'], this.root.left.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.jointPoint[2]+this.bodyLocation[2])
         this.root.left.right.right.right.baseTransform = rotateMat(this.inRotation['leg-back-left']['x'], this.inRotation['leg-back-left']['y'], this.inRotation['leg-back-left']['z'], this.root.left.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.jointPoint[2]+this.bodyLocation[2])
         this.root.left.right.right.right.right.baseTransform = rotateMat(this.inRotation['leg-back-right']['x'], this.inRotation['leg-back-right']['y'], this.inRotation['leg-back-right']['z'], this.root.left.right.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.right.right.right.baseTransform = rotateMat(this.inRotation['tail']['x'], this.inRotation['tail']['y'], this.inRotation['tail']['z'], this.root.left.right.right.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.right.right.jointPoint[2]+this.bodyLocation[2])
+        console.log('rotate model')
     }
 
     updateAnimation() {
@@ -247,5 +251,6 @@ export class Dog {
         this.root.left.right.right.baseTransform = rotateMat(this.rotations['leg-front-right'], 0, 0, this.root.left.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.jointPoint[2]+this.bodyLocation[2])
         this.root.left.right.right.right.baseTransform = rotateMat(this.rotations['leg-back-left'], 0, 0, this.root.left.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.jointPoint[2]+this.bodyLocation[2])
         this.root.left.right.right.right.right.baseTransform = rotateMat(this.rotations['leg-back-right'], 0, 0, this.root.left.right.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.right.right.right.baseTransform = rotateMat(this.rotations['tail'], 0, 0, this.root.left.right.right.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.right.right.jointPoint[2]+this.bodyLocation[2])
     }
 }

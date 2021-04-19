@@ -183,6 +183,11 @@ function events(master) {
         'y': document.getElementById('dLBRy'),
         'z': document.getElementById('dLBRz')
     }
+    const dogTailRotation = {
+        'x' : document.getElementById('dTx'),
+        'y' : document.getElementById('dTy'),
+        'z' : document.getElementById('dTz')
+    }
     const movement = {
         'x': document.getElementById('movex'),
         'y': document.getElementById('movey'),
@@ -634,6 +639,31 @@ function events(master) {
         master.giraffe.inRotation['leg-back-right']['z'] = val
         master.giraffe.rotateModel()
         master.giraffe.updateTransform()
+        render(master)
+    }
+
+    dogTailRotation['x'].oninput = function() {
+        console.log('masuk sini')
+        const val = parseInt(dogTailRotation['x'].value)
+        master.dog.inRotation['tail']['x'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+
+    dogTailRotation['y'].oninput = function() {
+        const val = parseInt(dogTailRotation['y'].value)
+        master.dog.inRotation['tail']['y'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+
+    dogTailRotation['z'].oninput = function() {
+        const val = parseInt(dogTailRotation['z'].value)
+        master.dog.inRotation['tail']['z'] = val
+        master.dog.rotateModel()
+        master.dog.updateTransform()
         render(master)
     }
 
