@@ -184,9 +184,9 @@ function events(master) {
         'z': document.getElementById('dLBRz')
     }
     const dogTailRotation = {
-        'x' : document.getElementById('dTx'),
-        'y' : document.getElementById('dTy'),
-        'z' : document.getElementById('dTz')
+        'x' : document.getElementById('dTailx'),
+        'y' : document.getElementById('dTaily'),
+        'z' : document.getElementById('dTailz')
     }
     const movement = {
         'x': document.getElementById('movex'),
@@ -643,7 +643,6 @@ function events(master) {
     }
 
     dogTailRotation['x'].oninput = function() {
-        console.log('masuk sini')
         const val = parseInt(dogTailRotation['x'].value)
         master.dog.inRotation['tail']['x'] = val
         master.dog.rotateModel()
