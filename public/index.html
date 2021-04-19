@@ -108,8 +108,8 @@
                     vec3 worldNormal = normalize(fmNorm);
                     vec3 eyeToSurfaceFaceDir = normalize(fmWorldPos - vec3(0, 0, 0));
                     vec3 direction = reflect(eyeToSurfaceFaceDir, worldNormal);
-
-                    gl_FragColor = textureCube(uSamplerCube, direction);
+                    
+                    gl_FragColor = vec4(vec4(textureCube(uSamplerCube, direction)).rgb * vLighting.xyz, 1);
                 }
             } else {
                 highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
@@ -343,6 +343,61 @@
                 </div>
                 <input type="range" min="-20" max="20" value="0" class="slider" id="dogRot">
                 <button type="button" id="dogAnimate">animate</button>
+            </div>
+            <div>
+                <div>
+                    <label>Bat Translation</label>
+                </div>
+                <input type="range" min="-10" max="10" value="0" class="slider" id="bTx">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="bTy">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="bTz">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Body Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bBx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bBy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bBz">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Wing 1 Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bW1x">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bW1y">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bW1z">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Wing 2 Rotation</label>
+                </div>
+                <input type="range" min="-180" max="180" value="0" class="slider" id="bW2x">
+                <input type="range" min="-180" max="180" value="0" class="slider" id="bW2y">
+                <input type="range" min="-180" max="180" value="0" class="slider" id="bW2z">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Leg Front Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bLFLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bLFLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bLFLz">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Leg Front Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bLFRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bLFRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="bLFRz">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Animation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="batRot">
+                <button type="button" id="batAnimate">animate</button>
             </div>
             <div>
                 <button onclick="help()">Help</button>

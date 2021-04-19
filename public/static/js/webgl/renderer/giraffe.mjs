@@ -53,9 +53,9 @@ export class GiraffesRenderer {
         this.master.gl.bindBuffer(this.master.gl.ELEMENT_ARRAY_BUFFER, indices)
         this.master.gl.bufferData(this.master.gl.ELEMENT_ARRAY_BUFFER, node.render['indices'], this.master.gl.STATIC_DRAW);
 
-        this.master.gl.activeTexture(this.master.gl.TEXTURE0);
+        this.master.gl.activeTexture(this.master.gl.TEXTURE1);
         this.master.gl.bindTexture(this.master.gl.TEXTURE_2D, node.render['loadedTexture']);
-        this.master.gl.uniform1i(this.master.matUSamplerLocation, 0);
+        this.master.gl.uniform1i(this.master.matUSamplerLocation, 1);
 
         this.master.gl.drawElements(this.master.gl.TRIANGLES, node.render['indices'].length, this.master.gl.UNSIGNED_SHORT, 0);
     }

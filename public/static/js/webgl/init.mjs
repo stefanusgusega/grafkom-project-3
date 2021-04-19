@@ -46,7 +46,7 @@ export function init(master) {
     master.mappingMode = master.gl.getUniformLocation(master.gl.program, 'mode');
     master.shadeMode = master.gl.getUniformLocation(master.gl.program, 'stateShade');
     master.matNormalBumpLocation = master.gl.getUniformLocation(master.gl.program, 'normalMatrix');
-    // master.matUSamplerLocation = master.gl.getUniformLocation(master.gl.program, 'uSampler');
+    master.matUSamplerLocation = master.gl.getUniformLocation(master.gl.program, 'uSampler');
     master.matUSamplerCubeLocation = master.gl.getUniformLocation(master.gl.program, 'uSamplerCube');
     
     master.worldMatrix = matIdentity();
@@ -70,8 +70,8 @@ export function init(master) {
 	master.gl.uniformMatrix4fv(master.matViewUniformLocation, false, viewMatrix);
     master.gl.uniformMatrix4fv(master.matProjUniformLocation, false, projMatrix);
     master.gl.uniformMatrix4fv(master.matNormLocation, false, normMatrix);
-    master.gl.uniform1i(master.matUSamplerLocation, 0);
-    master.gl.uniform1i(master.matUSamplerCubeLocation, 1);
+    master.gl.uniform1i(master.matUSamplerLocation, 1);
+    master.gl.uniform1i(master.matUSamplerCubeLocation, 0);
     // bump mapping
     master.gl.uniformMatrix3fv(master.matNormalBumpLocation, false, normBumpMatrix);
 
@@ -212,6 +212,36 @@ function events(master) {
         'y' : document.getElementById('dTaily'),
         'z' : document.getElementById('dTailz')
     }
+    const batTranslation = {
+        'x': document.getElementById('bTx'),
+        'y': document.getElementById('bTy'),
+        'z': document.getElementById('bTz')
+    }
+    const batBodyRotation = {
+        'x': document.getElementById('bBx'),
+        'y': document.getElementById('bBy'),
+        'z': document.getElementById('bBz')
+    }
+    const batWing1Rotation = {
+        'x': document.getElementById('bW1x'),
+        'y': document.getElementById('bW1y'),
+        'z': document.getElementById('bW1z')
+    }
+    const batWing2Rotation = {
+        'x': document.getElementById('bW2x'),
+        'y': document.getElementById('bW2y'),
+        'z': document.getElementById('bW2z')
+    }
+    const batLegFrontLeftRotation = {
+        'x': document.getElementById('bLFLx'),
+        'y': document.getElementById('bLFLy'),
+        'z': document.getElementById('bLFLz')
+    }
+    const batLegFrontRightRotation = {
+        'x': document.getElementById('bLFRx'),
+        'y': document.getElementById('bLFRy'),
+        'z': document.getElementById('bLFRz')
+    }
     const movement = {
         'x': document.getElementById('movex'),
         'y': document.getElementById('movey'),
@@ -234,7 +264,8 @@ function events(master) {
     }
     const animation = {
         'giraffe': document.getElementById('giraffeRot'),
-        'dog' : document.getElementById('dogRot')
+        'dog': document.getElementById('dogRot'),
+        'bat': document.getElementById('batRot')
     }
 
     const resetButton = document.getElementById('reset');
@@ -245,6 +276,7 @@ function events(master) {
 
     const giraffeButton = document.getElementById('giraffeAnimate');
     const dogButton = document.getElementById('dogAnimate')
+    const batButton = document.getElementById('batAnimate')
 
     rotationCamera['x'].oninput = function() {
         master.cameraRotation[0] = parseInt(rotationCamera['x'].value);
@@ -707,7 +739,7 @@ function events(master) {
         render(master)
     }
 
-    giraffeLegBackRightRotation['z'].oninput = function() {
+    dogLegBackRightRotation['z'].oninput = function() {
         const val = parseInt(giraffeLegBackRightRotation['z'].value)
         master.giraffe.inRotation['leg-back-right']['z'] = val
         master.giraffe.rotateModel()
@@ -739,6 +771,150 @@ function events(master) {
         render(master)
     }
 
+    batTranslation['x'].oninput = function() {
+        const val = parseInt(batTranslation['x'].value)
+        master.bat.bodyLocation[0] = val
+        master.bat.translateModel()
+        master.bat.updateTransform()
+        render(master);
+    }
+
+    batTranslation['y'].oninput = function() {
+        const val = parseInt(batTranslation['y'].value)
+        master.bat.bodyLocation[1] = val
+        master.bat.translateModel()
+        master.bat.updateTransform()
+        render(master);
+    }
+
+    batTranslation['z'].oninput = function() {
+        const val = parseInt(batTranslation['z'].value)
+        master.bat.bodyLocation[2] = val
+        master.bat.translateModel()
+        master.bat.updateTransform()
+        render(master);
+    }
+
+    batBodyRotation['x'].oninput = function() {
+        const val = parseInt(batBodyRotation['x'].value)
+        master.bat.inRotation['body']['x'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batBodyRotation['y'].oninput = function() {
+        const val = parseInt(batBodyRotation['y'].value)
+        master.bat.inRotation['body']['y'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batBodyRotation['z'].oninput = function() {
+        const val = parseInt(batBodyRotation['z'].value)
+        master.bat.inRotation['body']['y'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batWing1Rotation['x'].oninput = function() {
+        const val = parseInt(batWing1Rotation['x'].value)
+        master.bat.inRotation['wing1']['x'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batWing1Rotation['y'].oninput = function() {
+        const val = parseInt(batWing1Rotation['y'].value)
+        master.bat.inRotation['wing1']['y'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batWing1Rotation['z'].oninput = function() {
+        const val = parseInt(batWing1Rotation['z'].value)
+        master.bat.inRotation['wing1']['z'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batWing2Rotation['x'].oninput = function() {
+        const val = parseInt(batWing2Rotation['x'].value)
+        master.bat.inRotation['wing2']['x'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batWing2Rotation['y'].oninput = function() {
+        const val = parseInt(batWing2Rotation['y'].value)
+        master.bat.inRotation['wing2']['y'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batWing2Rotation['z'].oninput = function() {
+        const val = parseInt(batWing2Rotation['z'].value)
+        master.bat.inRotation['wing2']['z'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batLegFrontLeftRotation['x'].oninput = function() {
+        const val = parseInt(batLegFrontLeftRotation['x'].value)
+        master.bat.inRotation['leg-front-left']['x'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batLegFrontLeftRotation['y'].oninput = function() {
+        const val = parseInt(batLegFrontLeftRotation['y'].value)
+        master.bat.inRotation['leg-front-left']['y'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batLegFrontLeftRotation['z'].oninput = function() {
+        const val = parseInt(batLegFrontLeftRotation['z'].value)
+        master.bat.inRotation['leg-front-left']['z'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batLegFrontRightRotation['x'].oninput = function() {
+        const val = parseInt(batLegFrontRightRotation['x'].value)
+        master.bat.inRotation['leg-front-right']['x'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batLegFrontRightRotation['y'].oninput = function() {
+        const val = parseInt(batLegFrontRightRotation['y'].value)
+        master.bat.inRotation['leg-front-right']['y'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
+    batLegFrontRightRotation['z'].oninput = function() {
+        const val = parseInt(batLegFrontRightRotation['z'].value)
+        master.bat.inRotation['leg-front-right']['z'] = val
+        master.bat.rotateModel()
+        master.bat.updateTransform()
+        render(master)
+    }
+
     animation['giraffe'].oninput = function() {
         const val = parseInt(animation['giraffe'].value);
         master.giraffe.distributeRotation(val)
@@ -752,6 +928,14 @@ function events(master) {
         master.dog.distributeRotation(val)
         master.dog.updateAnimation();
         master.dog.updateTransform();
+        render(master);
+    }
+
+    animation['bat'].oninput = function() {
+        const val = parseInt(animation['bat'].value);
+        master.bat.distributeRotation(val)
+        master.bat.updateAnimation();
+        master.bat.updateTransform();
         render(master);
     }
     
@@ -813,7 +997,7 @@ function events(master) {
         var markUp = true;
         var markDown = false;
         function animate() {
-            master.renderer['giraffe'].render();
+            render(master)
             if (markUp) {
                 now++;
                 if (now == 20) {
@@ -847,7 +1031,7 @@ function events(master) {
         var markUp = true;
         var markDown = false;
         function animate() {
-            master.renderer['dog'].render();
+            render(master)
             if (markUp) {
                 now++;
                 if (now == 20) {
@@ -867,6 +1051,39 @@ function events(master) {
             master.dog.updateAnimation();
             master.dog.updateTransform();
             animation['dog'].value = now;
+            
+            if (master.isStartDogAnimation) requestAnimationFrame(animate);
+        }
+
+        master.isStartDogAnimation = !master.isStartDogAnimation;
+        if (master.isStartDogAnimation) requestAnimationFrame(animate);
+    });
+
+    batButton.addEventListener("click", function() {
+        var now = parseInt(animation['bat'].value);
+        var markUp = true;
+        var markDown = false;
+        function animate() {
+            render(master)
+            if (markUp) {
+                now++;
+                if (now == 20) {
+                    markUp = false;
+                    markDown = true;
+                }
+            }
+            if (markDown) {
+                now--;
+                if (now == -20) {
+                    markUp = true;
+                    markDown = false;
+                }
+            }
+
+            master.bat.distributeRotation(now)
+            master.bat.updateAnimation();
+            master.bat.updateTransform();
+            animation['bat'].value = now;
             
             if (master.isStartDogAnimation) requestAnimationFrame(animate);
         }

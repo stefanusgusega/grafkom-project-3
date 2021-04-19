@@ -50,14 +50,9 @@ export class BatRenderer {
         this.master.gl.vertexAttribPointer(this.master.vBitangent, 3, this.master.gl.FLOAT, false, 0, 0);
         this.master.gl.enableVertexAttribArray(this.master.vBitangent);
 
-
         this.master.gl.bindBuffer(this.master.gl.ELEMENT_ARRAY_BUFFER, indices)
         this.master.gl.bufferData(this.master.gl.ELEMENT_ARRAY_BUFFER, node.render['indices'], this.master.gl.STATIC_DRAW);
-
-        this.master.gl.activeTexture(this.master.gl.TEXTURE0);
-        this.master.gl.bindTexture(this.master.gl.TEXTURE_2D, node.render['loadedTexture']);
-        this.master.gl.uniform1i(this.master.matUSamplerLocation, 0);
-
+            
         this.master.gl.drawElements(this.master.gl.TRIANGLES, node.render['indices'].length, this.master.gl.UNSIGNED_SHORT, 0);
     }
 }
