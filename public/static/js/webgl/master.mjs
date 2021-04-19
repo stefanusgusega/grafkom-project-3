@@ -1,5 +1,6 @@
 import {Giraffe} from './model/integrated/giraffe/giraffe.mjs';
 import {Dog} from './model/integrated/dog/dog.mjs';
+import { Bat } from './model/integrated/Bat/Bat.mjs';
 export class Master {
     constructor() {
         this.canvas;
@@ -26,8 +27,9 @@ export class Master {
         this.movement = [0, 0, 0];
         this.cameraRotation = [0, 0, 0];
 
-        this.giraffe = new Giraffe();
-        this.dog = new Dog();
+        this.giraffe;
+        this.dog;
+        this.bat;
         this.isStartGiraffeAnimation = false;
         this.isStartDogAnimation = false;
         this.renderer = {}
@@ -40,5 +42,6 @@ export class Master {
         this.matDiffuseLocation;
         this.matNormMapLocation;
         this.matLightPosLocation;
+
     }
 }

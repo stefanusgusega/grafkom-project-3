@@ -3,6 +3,10 @@ import {transpose, inverse, translationTranspos, matIdentity, matLookAt, matPers
 import {render} from './render.mjs';
 import {GiraffesRenderer} from './renderer/giraffe.mjs'
 import {DogRenderer} from './renderer/dog.mjs'
+import {BatRenderer} from './renderer/bat.mjs'
+import { Dog } from './model/integrated/dog/dog.mjs';
+import { Bat } from './model/integrated/Bat/Bat.mjs';
+import { Giraffe } from './model/integrated/giraffe/giraffe.mjs';
 
 export function init(master) {
     master.canvas = document.getElementById('glCanvas');
@@ -39,11 +43,11 @@ export function init(master) {
 	master.matViewUniformLocation = master.gl.getUniformLocation(master.gl.program, 'mView');
     master.matProjUniformLocation = master.gl.getUniformLocation(master.gl.program, 'mProj');
     master.matNormLocation = master.gl.getUniformLocation(master.gl.program, 'mNorm');
-    master.matUSamplerLocation = master.gl.getUniformLocation(master.gl.program, 'uSampler');
     master.mappingMode = master.gl.getUniformLocation(master.gl.program, 'mode');
     master.shadeMode = master.gl.getUniformLocation(master.gl.program, 'stateShade');
     master.matNormalBumpLocation = master.gl.getUniformLocation(master.gl.program, 'normalMatrix');
-
+    // master.matUSamplerLocation = master.gl.getUniformLocation(master.gl.program, 'uSampler');
+    master.matUSamplerCubeLocation = master.gl.getUniformLocation(master.gl.program, 'uSamplerCube');
     
     master.worldMatrix = matIdentity();
     var viewMatrix = matLookAt(master.eye, master.center, master.up);
@@ -67,11 +71,17 @@ export function init(master) {
     master.gl.uniformMatrix4fv(master.matProjUniformLocation, false, projMatrix);
     master.gl.uniformMatrix4fv(master.matNormLocation, false, normMatrix);
     master.gl.uniform1i(master.matUSamplerLocation, 0);
+    master.gl.uniform1i(master.matUSamplerCubeLocation, 1);
     // bump mapping
     master.gl.uniformMatrix3fv(master.matNormalBumpLocation, false, normBumpMatrix);
+
+    master.giraffe = new Giraffe();
+    master.dog = new Dog();
+    master.bat = new Bat(master);
     
     master.renderer['giraffe'] = new GiraffesRenderer(master);
     master.renderer['dog'] = new DogRenderer(master);
+    master.renderer['bat'] = new BatRenderer(master);
     
     events(master);
     render(master);

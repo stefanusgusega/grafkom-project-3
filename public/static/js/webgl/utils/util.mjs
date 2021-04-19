@@ -500,4 +500,29 @@ export function loadTexture(master, base64) {
     return texture;
 }
 
-// TODO: bump mapping here
+export function loadCubeTexture(master, faceInfo) {
+    const texture = master.gl.createTexture();
+    master.gl.bindTexture(master.gl.TEXTURE_2D, texture);
+    const level = 0;
+    const internalFormat = master.gl.RGBA;
+    const width = 1;
+    const height = 1;
+    const border = 0;
+    const srcFormat = master.gl.RGBA;
+    const srcType = master.gl.UNSIGNED_BYTE;
+    master.gl.texImage2D(faceInfo.target, level, internalFormat,
+                  width, height, border, srcFormat, srcType,
+                  null);
+    
+    const image = new Image();
+    image.onload = function () {
+        master.gl.bindTexture(master.gl.TEXTURE_CUBE_MAP, texture);
+        master.gl.texImage2D(faceInfo.target, level, internalFormat, srcFormat, srcType, image);
+        master.gl.generateMipmap(master.gl.TEXTURE_2D);
+    }
+    image.src = faceInfo.url;
+    master.gl.generateMipmap(master.gl.TEXTURE_CUBE_MAP);
+    master.gl.texParameteri(master.gl.TEXTURE_CUBE_MAP, master.gl.TEXTURE_MIN_FILTER, master.gl.LINEAR_MIPMAP_LINEAR);
+    
+    return texture;
+}

@@ -1,23 +1,23 @@
-import {loadTexture, isPowerOf2} from './../utils/util.mjs';
+import {loadCubeTexture, isPowerOf2} from './../utils/util.mjs';
 
-export class DogRenderer {
+export class BatRenderer {
     constructor(master) {
         this.master = master;
-        this.root = master.dog.root;
+        this.root = master.bat.root;
         this.loadAllTexture();
     }
 
     loadAllTexture(node=this.root) {
         if (node.right) this.loadAllTexture(node.right)
         if (node.left) this.loadAllTexture(node.left);
-        node.render['loadedTexture'] = loadTexture(this.master, node.render['texture']);
+        node.render['loadedTexture'] = loadCubeTexture(this.master, node.render['texture']);
     }
 
     render(node=this.root) {
         if (node.right) this.render(node.right);
         if (node.left) this.render(node.left);
 
-        this.master.gl.uniform1i(this.master.mappingMode, 1);
+        this.master.gl.uniform1i(this.master.mappingMode, 2);
         const vertex = this.master.gl.createBuffer();
         const textureCoord = this.master.gl.createBuffer();
         const normal = this.master.gl.createBuffer();
