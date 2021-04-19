@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/css/main.css">
-    <script id="shaderVs" type="x-shader/x-vertex">        
+     <script id="shaderVs" type="x-shader/x-vertex">        
         attribute vec4 vertPosition;
         attribute vec3 vertNormal;
 
@@ -39,16 +39,17 @@
         uniform samplerCube uSampler;
 
         // The position of the camera
-        uniform vec3 mWorldCameraPosition;
+        uniform vec3 u_worldCameraPosition;
 
         void main() {
         vec3 worldNormal = normalize(v_worldNormal);
-        vec3 eyeToSurfaceDir = normalize(v_worldPosition - mWorldCameraPosition);
+        vec3 eyeToSurfaceDir = normalize(v_worldPosition - u_worldCameraPosition);
         vec3 direction = reflect(eyeToSurfaceDir,worldNormal);
 
         gl_FragColor = textureCube(uSampler, direction);
         }
     </script>
+
     <script>
         function help() {
             var x = document.getElementById("helpText");
@@ -84,6 +85,15 @@
                 <button type="button" id="load">Load</button>
             </div>
             <div>
+                <label>Camera Rotate X</label>
+                <input type="range" min="-180" max="180" value="0" class="slider" id="cameraRotateX">
+            </div>
+            <div>
+                <label>Camera Rotate Y</label>
+                <input type="range" min="-180" max="180" value="0" class="slider" id="cameraRotateY">
+            </div>
+
+            <div>
                 <div>
                     <label>Movement</label>
                 </div>
@@ -117,11 +127,196 @@
             </div>
             <div>
                 <div>
+                    <label>Giraffe Translation</label>
+                </div>
+                <input type="range" min="-10" max="10" value="0" class="slider" id="gTx">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="gTy">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="gTz">
+            </div>
+            <div>
+                <div>
+                    <label>Giraffe Neck Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gRNx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gRNy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gRNz">
+            </div>
+            <div>
+                <div>
+                    <label>Giraffe Head Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gHx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gHy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gHz">
+            </div>
+            <div>
+                <div>
+                    <label>Giraffe Leg Front Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLFLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLFLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLFLz">
+            </div>
+            <div>
+                <div>
+                    <label>Giraffe Leg Front Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLFRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLFRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLFRz">
+            </div>
+            <div>
+                <div>
+                    <label>Giraffe Leg Back Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLBLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLBLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLBLz">
+            </div>
+            <div>
+                <div>
+                    <label>Giraffe Leg Back Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLBRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLBRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gLBRz">
+            </div>
+            <div>
+                <div>
                     <label>Giraffe Animation</label>
                 </div>
                 <input type="range" min="-20" max="20" value="0" class="slider" id="giraffeRot">
                 <button type="button" id="giraffeAnimate">animate</button>
             </div>
+            <div>
+                <div>
+                    <label>Bat Translation</label>
+                </div>
+                <input type="range" min="-10" max="10" value="0" class="slider" id="dTx">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="dTy">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="dTz">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Wing2 Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dRNx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dRNy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dRNz">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Wing1 Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dHx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dHy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dHz">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Leg Front Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFLz">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Leg Front Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFRz">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Ear Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBLz">
+            </div>
+            <div>
+                <div>
+                    <label>Bat Ear Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBRz">
+            </div>
+            <div>
+            <div>
+                <div>
+                    <label>Bat Animation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="BatRot">
+                <button type="button" id="BatAnimate">animate</button>
+            </div>
+            <div>
+                <div>
+                    <label>Dog Translation</label>
+                </div>
+                <input type="range" min="-10" max="10" value="0" class="slider" id="dTx">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="dTy">
+                <input type="range" min="-10" max="10" value="0" class="slider" id="dTz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Neck Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dRNx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dRNy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dRNz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Head Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dHx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dHy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dHz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Leg Front Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFLz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Leg Front Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLFRz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Leg Back Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBLz">
+            </div>
+            <div>
+                <div>
+                    <label>Dog Leg Back Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dLBRz">
+            </div>
+            <div>
+            <div>
+                <div>
+                    <label>Dog Animation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="dogRot">
+                <button type="button" id="dogAnimate">animate</button>
+            </div>
+
             <div>
                 <button onclick="help()">Help</button>
                 <textarea readonly id="helpText" style="display:none">
