@@ -97,9 +97,9 @@
                     gl_FragColor = vec4(texelColor.rgb * vLighting.xyz, texelColor.a);
                 }
                 else if (mode == 1) {
-                    vec3 light_dir = normalize(ts_light_pos - ts_frag_pos);
+                    vec3 light_dir = vLighting;
                     vec3 albedo = texture2D(uSampler, vTextureCoord).rgb;
-                    vec3 ambient = 0.3 * albedo;
+                    vec3 ambient = 0.1 * albedo;
 
                     vec3 norm = normalize(albedo * 2.0 - 1.0);
                     float diffuse = max(dot(light_dir, norm), 0.0);
@@ -276,9 +276,9 @@
                 <div>
                     <label>Dog Body Rotation</label>
                 </div>
-                <input type="range" min="-20" max="20" value="0" class="slider" id="dBx">
-                <input type="range" min="-20" max="20" value="0" class="slider" id="dBy">
-                <input type="range" min="-20" max="20" value="0" class="slider" id="dBz">
+                <input type="range" min="-180" max="180" value="0" class="slider" id="dBx">
+                <input type="range" min="-180" max="180" value="0" class="slider" id="dBy">
+                <input type="range" min="-180" max="180" value="0" class="slider" id="dBz">
             </div>
             <div>
                 <div>
