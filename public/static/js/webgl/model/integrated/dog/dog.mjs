@@ -96,7 +96,7 @@ export class Dog {
             'body': this.centers['body'],
             'head': this.centers['head'],
             'neck': [this.centers['neck'][0], this.centers['body'][1], this.centers['neck'][2]],
-            'tail': [this.centers['tail'][0], this.centers['tail'][1], this.centers['body'][2]],
+            'tail': [this.centers['tail'][0], this.centers['tail'][1], this.centers['tail'][2] - tailSize[2]/2],
             'ear-left': this.centers['ear-left'],
             'ear-right': this.centers['ear-right'],
             'leg-front-left': this.centers['leg-front-left'],
@@ -277,5 +277,9 @@ export class Dog {
         this.root.left.right.right.right.baseTransform = rotateMat(this.rotations['leg-back-left'], 0, 0, this.root.left.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.jointPoint[2]+this.bodyLocation[2])
         this.root.left.right.right.right.right.baseTransform = rotateMat(this.rotations['leg-back-right'], 0, 0, this.root.left.right.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.right.jointPoint[2]+this.bodyLocation[2])
         this.root.left.right.right.right.right.right.baseTransform = rotateMat(0, this.inRotation['tail']['y'], 0, this.root.left.right.right.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.right.right.jointPoint[2]+this.bodyLocation[2])
+    }
+
+    save() {
+        
     }
 }
