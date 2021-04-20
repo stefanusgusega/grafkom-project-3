@@ -253,6 +253,8 @@ export class Bat {
     distributeRotation(val) {
         this.inRotation['leg-front-left']['x'] = val
         this.inRotation['leg-front-right']['x'] = -val
+        this.inRotation['wing1']['y'] = val;
+        this.inRotation['wing2']['y'] = -val;
     }
 
     transformModel() {
@@ -261,8 +263,8 @@ export class Bat {
     }
 
     updateAnimation() {
-        this.root.left.baseTransform = rotateMat(this.inRotation['wing1']['x'], 0, 0, this.root.left.jointPoint[0]+this.bodyLocation[0], this.root.left.jointPoint[1]+this.bodyLocation[1], this.root.left.jointPoint[2]+this.bodyLocation[2])
-        this.root.left.right.baseTransform = rotateMat(this.inRotation['wing2']['x'], 0, 0, this.root.left.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.baseTransform = rotateMat(this.inRotation['wing1']['x'], this.inRotation['wing1']['y'], this.inRotation['wing1']['z'], this.root.left.jointPoint[0]+this.bodyLocation[0], this.root.left.jointPoint[1]+this.bodyLocation[1], this.root.left.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.baseTransform = rotateMat(this.inRotation['wing2']['x'], this.inRotation['wing2']['y'], this.inRotation['wing2']['z'], this.root.left.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.jointPoint[2]+this.bodyLocation[2])
         this.root.left.right.right.baseTransform = rotateMat(this.inRotation['leg-front-left']['x'], 0, 0, this.root.left.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.jointPoint[2]+this.bodyLocation[2])
         this.root.left.right.right.right.baseTransform = rotateMat(this.inRotation['leg-front-right']['x'], 0, 0, this.root.left.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.jointPoint[2]+this.bodyLocation[2])
     }

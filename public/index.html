@@ -16,10 +16,6 @@
         varying highp vec3 vLighting;
         varying vec3 L;
 
-        varying vec3 ts_light_pos;
-        varying vec3 ts_view_pos;
-        varying vec3 ts_frag_pos;
-
         varying vec3 fmNorm;
         varying vec3 fmWorldPos;
 
@@ -63,10 +59,6 @@
             vec3 T = normalize(normalMatrix*vertTangent);
             vec3 B = normalize(normalMatrix*vertBitangent);
             mat3 tbn = mat3(T, B, N);
-
-            ts_light_pos = tbn * directionalVector;
-            ts_view_pos = tbn * vec3(0, 0, 0);
-            ts_frag_pos = tbn * vec3(worldPos);
         }
     </script>
     
@@ -79,10 +71,6 @@
 
         varying vec3 fmNorm;
         varying vec3 fmWorldPos;
-
-        varying vec3 ts_light_pos;
-        varying vec3 ts_view_pos;
-        varying vec3 ts_frag_pos;
         
         uniform sampler2D uSampler;
         uniform samplerCube uSamplerCube;
@@ -96,13 +84,11 @@
                     highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
                     gl_FragColor = vec4(texelColor.rgb * vLighting.xyz, texelColor.a);
                 } else if (mode == 1) {
-                    vec3 light_dir = vLighting;
                     vec3 albedo = texture2D(uSampler, vTextureCoord).rgb;
-                    vec3 ambient = 0.1 * albedo;
 
                     vec3 norm = normalize(albedo * 2.0 - 1.0);
-                    float diffuse = max(dot(light_dir, norm), 0.0);
-                    gl_FragColor = vec4(diffuse * albedo + ambient, 1.0);
+                    float diffuse = max(dot(vLighting, norm), 0.0);
+                    gl_FragColor = vec4(diffuse * albedo, 1.0);
                 } else if (mode == 2) {
                     vec3 worldNormal = normalize(fmNorm);
                     vec3 eyeToSurfaceFaceDir = normalize(fmWorldPos - vec3(0, 0, 0));
@@ -116,10 +102,9 @@
                     gl_FragColor = vec4(texelColor.rgb * vec3(1, 1, 1), texelColor.a);
                 } else if (mode == 1) {
                     vec3 albedo = texture2D(uSampler, vTextureCoord).rgb;
-                    vec3 ambient = 0.1 * albedo;
 
                     vec3 norm = normalize(albedo * 2.0 - 1.0);
-                    gl_FragColor = vec4(albedo + ambient, 1.0);
+                    gl_FragColor = vec4(albedo, 1.0);
                 } else if (mode == 2) {
                     vec3 worldNormal = normalize(fmNorm);
                     vec3 eyeToSurfaceFaceDir = normalize(fmWorldPos - vec3(0, 0, 0));
@@ -272,9 +257,41 @@
             </div>
             <div>
                 <div>
+                    <label>Giraffe Feet Front Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFFLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFFLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFFLz">
+            </div>
+            <div>
+                <div>
+                    <label>Giraffe Feet Front Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFFRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFFRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFFRz">
+            </div>
+            <div>
+                <div>
+                    <label>Giraffe Feet Back Left Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFBLx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFBLy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFBLz">
+            </div>
+            <div>
+                <div>
+                    <label>Giraffe Feet Back Right Rotation</label>
+                </div>
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFBRx">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFBRy">
+                <input type="range" min="-20" max="20" value="0" class="slider" id="gFBRz">
+            </div>
+            <div>
+                <div>
                     <label>Giraffe Animation</label>
                 </div>
-                <input type="range" min="-20" max="20" value="0" class="slider" id="giraffeRot">
+                <input type="range" min="-40" max="40" value="0" class="slider" id="giraffeRot">
                 <button type="button" id="giraffeAnimate">animate</button>
             </div>
             <div>
