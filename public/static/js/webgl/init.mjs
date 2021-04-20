@@ -1084,10 +1084,10 @@ function events(master) {
             master.bat.updateTransform();
             animation['bat'].value = now;
             
-            if (master.isStartDogAnimation) requestAnimationFrame(animate);
+            if (master.isStartBatAnimation) requestAnimationFrame(animate);
         }
 
-        master.isStartDogAnimation = !master.isStartDogAnimation;
-        if (master.isStartDogAnimation) requestAnimationFrame(animate);
+        master.isStartBatAnimation = !master.isStartBatAnimation;
+        if (master.isStartBatAnimation) requestAnimationFrame(animate);
     });
 }
