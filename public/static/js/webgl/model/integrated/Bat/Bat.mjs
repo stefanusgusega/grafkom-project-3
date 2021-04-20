@@ -4,8 +4,8 @@ import {Node} from './../../node.mjs';
 import {image} from './textures.mjs';
 
 export class Bat {
-    constructor(master) {
-        this.master = master;
+    constructor(gl) {
+        this.gl = gl;
         this.center = [0, 0, 0];
         this.buildSkeleton()
     }
@@ -141,6 +141,33 @@ export class Bat {
             'ear-right': {'x': 0, 'y': 0, 'z': 0},
         }
 
+        this.texture = [
+            {
+                target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+                url: image,
+            },
+            {
+                target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+                url: image,
+            },
+            {
+                target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+                url: image,
+            },
+            {
+                target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+                url: image,
+            },
+            {
+                target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
+                url: image,
+            },
+            {
+                target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
+                url: image,
+            },
+        ];
+
         this.rotation = 0;
         this.bodyLocation = [-1, -2, -1];
 
@@ -150,37 +177,23 @@ export class Bat {
         this.updateTransform();
     }
 
-    createTree() {
-        const texture = [
-            {
-                target: this.master.gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-                url: image,
-            },
-            {
-                target: this.master.gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-                url: image,
-            },
-            {
-                target: this.master.gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-                url: image,
-            },
-            {
-                target: this.master.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-                url: image,
-            },
-            {
-                target: this.master.gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-                url: image,
-            },
-            {
-                target: this.master.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
-                url: image,
-            },
-        ];
+    load(data) {
+        this.bitangents = data.bitangents;
+        this.bodyLocation = data.bodyLocation;
+        this.inRotation = data.inRotation;
+        this.jointPoints = data.jointPoints;
+        this.normals = data.normals;
+        this.texture = data.texture;
         
+        this.createTree();
+        this.transformModel();
+        this.updateAnimation();
+        this.updateTransform();
+    }
 
+    createTree() {
         const skeletonNodes = {};
-        for (var k in this.skeletons) skeletonNodes[k] = new Node(matIdentityMat(), this.jointPoints[k], this.centers[k], this.skeletons[k], indicesCube, this.colors[k], this.normals[k], this.tangents[k], this.bitangents[k], texture, this.textureCoords[k], null, null, k);
+        for (var k in this.skeletons) skeletonNodes[k] = new Node(matIdentityMat(), this.jointPoints[k], this.centers[k], this.skeletons[k], indicesCube, this.colors[k], this.normals[k], this.tangents[k], this.bitangents[k], this.texture, this.textureCoords[k], null, null, k);
 
         this.root = skeletonNodes['body'];
         this.root.left = skeletonNodes['wing1'];

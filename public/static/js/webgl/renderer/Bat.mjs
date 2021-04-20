@@ -2,10 +2,14 @@ import {loadCubeTexture, isPowerOf2} from './../utils/util.mjs';
 
 export class BatRenderer {
     constructor(master) {
+        this.load(master)
+    }
+
+    load(master) {
         this.master = master;
         this.root = master.bat.root;
         this.loadAllTexture();
-    }
+    } 
 
     loadAllTexture(node=this.root) {
         if (node.right) this.loadAllTexture(node.right)

@@ -77,7 +77,7 @@ export function init(master) {
 
     master.giraffe = new Giraffe();
     master.dog = new Dog();
-    master.bat = new Bat(master);
+    master.bat = new Bat(master.gl);
     
     master.renderer['giraffe'] = new GiraffesRenderer(master);
     master.renderer['dog'] = new DogRenderer(master);
@@ -277,6 +277,10 @@ function events(master) {
     const giraffeButton = document.getElementById('giraffeAnimate');
     const dogButton = document.getElementById('dogAnimate')
     const batButton = document.getElementById('batAnimate')
+
+    const saveButton = document.getElementById('save');
+    const loadButton = document.getElementById('load');
+    const uploadButton = document.getElementById('upload-btn');
 
     rotationCamera['x'].oninput = function() {
         master.cameraRotation[0] = parseInt(rotationCamera['x'].value);
@@ -1090,4 +1094,72 @@ function events(master) {
         master.isStartDogAnimation = !master.isStartDogAnimation;
         if (master.isStartDogAnimation) requestAnimationFrame(animate);
     });
+
+    uploadButton.addEventListener('change', function(event) {
+        const reader = new FileReader();
+        const file = event.target.files[0];
+  
+        reader.addEventListener('load', event => {
+            try{
+                var data = JSON.parse(event.target.result);
+            } catch (err) {
+                alert("invalid json file data!");
+            }
+
+            master.mode = data.mode;
+            master.eye = data.eye;
+            master.center = data.center;
+            master.up = data.up;
+            master.movement = data.movement;
+            master.cameraRotation = data.cameraRotation;
+
+            master.giraffe.load(data.giraffe)
+            master.renderer['giraffe'].load(master);
+
+            master.dog.load(data.dog)
+            master.renderer['dog'].load(master);
+
+            master.bat.load(data.bat)
+            master.renderer['bat'].load(master);
+
+            // master.dog = data.dog;
+            // master.bat = data.bat;
+
+
+            updateWorld(master);
+            updateProj(master);
+            updateView(master);
+            console.log('Success');
+            render(master)
+
+        });
+        reader.readAsText(file);
+    });
+
+    loadButton.addEventListener('click', function() {
+        if (window.FileList && window.File && window.FileReader) {
+            uploadButton.click();
+        } else {
+            alert("file upload not supported by your browser!");
+        }
+    })
+
+    saveButton.addEventListener("click", function() {
+        const save = {
+            mode: master.mode,
+            eye: master.eye,
+            center: master.center,
+            up: master.up,
+            movement: master.movement,
+            cameraRotation: master.cameraRotation,
+            giraffe: master.giraffe,
+            dog: master.dog,
+            bat: master.bat
+        }
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(save));
+        var downloadWidget = document.getElementById('download-link');
+        downloadWidget.setAttribute("href",     dataStr     );
+        downloadWidget.setAttribute("download", "data.json");
+        downloadWidget.click();
+    })
 }

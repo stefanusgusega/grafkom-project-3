@@ -158,6 +158,20 @@ export class Giraffe {
         this.updateTransform();
     }
 
+    load(data) {
+        this.bitangents = data.bitangents;
+        this.bodyLocation = data.bodyLocation;
+        this.inRotation = data.inRotation;
+        this.jointPoints = data.jointPoints;
+        this.normals = data.normals;
+        this.texture = data.texture;
+        
+        this.createTree();
+        this.transformModel();
+        this.updateAnimation();
+        this.updateTransform();
+    }
+
     createTree() {
         const skeletonNodes = {};
         for (var k in this.skeletons) skeletonNodes[k] = new Node(matIdentityMat(), this.jointPoints[k], this.centers[k], this.skeletons[k], indicesCube, this.colors[k], this.normals[k], this.tangents[k], this.bitangents[k], this.textures[k], this.textureCoords[k], null, null, k);

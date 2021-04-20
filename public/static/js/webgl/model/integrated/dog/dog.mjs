@@ -195,7 +195,6 @@ export class Dog {
         this.transformModel();
         this.updateAnimation();
         this.updateTransform();
-        console.log(this.root)
     }
     createTree() {
         const skeletonNodes = {};
@@ -257,6 +256,20 @@ export class Dog {
             }
             this.updateTransform(node.left);
         }
+    }
+    
+    load(data) {
+        this.bitangents = data.bitangents;
+        this.bodyLocation = data.bodyLocation;
+        this.inRotation = data.inRotation;
+        this.jointPoints = data.jointPoints;
+        this.normals = data.normals;
+        this.texture = data.texture;
+        
+        this.createTree();
+        this.transformModel();
+        this.updateAnimation();
+        this.updateTransform();
     }
 
     distributeRotation(val) {

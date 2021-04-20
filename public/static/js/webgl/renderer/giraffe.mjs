@@ -2,10 +2,14 @@ import {loadTexture, isPowerOf2} from './../utils/util.mjs';
 
 export class GiraffesRenderer {
     constructor(master) {
+        this.load(master)
+    }
+
+    load(master) {
         this.master = master;
         this.root = master.giraffe.root;
         this.loadAllTexture();
-    }
+    } 
 
     loadAllTexture(node=this.root) {
         if (node.right) this.loadAllTexture(node.right)
