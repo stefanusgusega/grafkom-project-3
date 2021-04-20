@@ -207,6 +207,16 @@ function events(master) {
         'y': document.getElementById('dLBRy'),
         'z': document.getElementById('dLBRz')
     }
+    const dogEarRightRotation = {
+        'x': document.getElementById('dREx'),
+        'y': document.getElementById('dREy'),
+        'z': document.getElementById('dREz')
+    }
+    const dogEarLeftRotation = {
+        'x': document.getElementById('dLEx'),
+        'y': document.getElementById('dLEy'),
+        'z': document.getElementById('dLEz')
+    }
     const dogTailRotation = {
         'x' : document.getElementById('dTailx'),
         'y' : document.getElementById('dTaily'),
@@ -743,14 +753,54 @@ function events(master) {
         render(master)
     }
 
-    dogLegBackRightRotation['z'].oninput = function() {
-        const val = parseInt(giraffeLegBackRightRotation['z'].value)
-        master.giraffe.inRotation['leg-back-right']['z'] = val
-        master.giraffe.transformModel()
-        master.giraffe.updateTransform()
+    dogEarLeftRotation['x'].oninput = function() {
+        const val = parseInt(dogEarLeftRotation['x'].value)
+        master.dog.inRotation['ear-left']['x'] = val
+        master.dog.transformModel()
+        master.dog.updateTransform()
         render(master)
     }
 
+    dogEarLeftRotation['y'].oninput = function() {
+        const val = parseInt(dogEarLeftRotation['y'].value)
+        master.dog.inRotation['ear-left']['y'] = val
+        master.dog.transformModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+
+    dogEarLeftRotation['z'].oninput = function() {
+        const val = parseInt(dogEarLeftRotation['z'].value)
+        master.dog.inRotation['ear-left']['z'] = val
+        master.dog.transformModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+
+    dogEarRightRotation['x'].oninput = function() {
+        const val = parseInt(dogEarRightRotation['x'].value)
+        master.dog.inRotation['ear-right']['x'] = val
+        master.dog.transformModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
+    dogEarRightRotation['y'].oninput = function() {
+        const val = parseInt(dogEarRightRotation['y'].value)
+        master.dog.inRotation['ear-right']['y'] = val
+        master.dog.transformModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+
+    dogEarRightRotation['z'].oninput = function() {
+        const val = parseInt(dogEarRightRotation['z'].value)
+        master.dog.inRotation['ear-right']['z'] = val
+        master.dog.transformModel()
+        master.dog.updateTransform()
+        render(master)
+    }
+    
     dogTailRotation['x'].oninput = function() {
         const val = parseInt(dogTailRotation['x'].value)
         master.dog.inRotation['tail']['x'] = val
@@ -1088,11 +1138,11 @@ function events(master) {
             master.bat.updateTransform();
             animation['bat'].value = now;
             
-            if (master.isStartDogAnimation) requestAnimationFrame(animate);
+            if (master.isStartBatAnimation) requestAnimationFrame(animate);
         }
 
-        master.isStartDogAnimation = !master.isStartDogAnimation;
-        if (master.isStartDogAnimation) requestAnimationFrame(animate);
+        master.isStartBatAnimation = !master.isStartBatAnimation;
+        if (master.isStartBatAnimation) requestAnimationFrame(animate);
     });
 
     uploadButton.addEventListener('change', function(event) {
