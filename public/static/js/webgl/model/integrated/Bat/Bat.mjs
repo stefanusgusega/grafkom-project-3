@@ -75,7 +75,7 @@ export class Bat {
         this.jointPoints = {
             'body': this.centers['body'],
             'Wing2': this.centers['Wing2'],
-            'Wing1': [this.centers['Wing1'][0], this.centers['body'][1], this.centers['Wing1'][2]],
+            'Wing1': this.centers['Wing1'],
             'leg-front-left': this.centers['leg-front-left'],
             'leg-front-right': this.centers['leg-front-right'],
             'ear-left': this.centers['ear-left'],
@@ -112,9 +112,30 @@ export class Bat {
             'ear-right': getNormalCube(this.skeletons['ear-right']),
         }
 
-        this.rotation = 0;
+        this.rotations = {
+            'body': 0,
+            'Wing1': 0,
+            'Wing2': 0,
+            'leg-front-left': 0,
+            'leg-front-right': 0,
+            'ear-left': 0,
+            'ear-right': 0
+        }
+
+        this.inRotation = {
+            'body': {'x': 0, 'y': 0, 'z': 0},
+            'Wing1': {'x': 0, 'y': 0, 'z': 0},
+            'Wing2': {'x': 0, 'y': 0, 'z': 0},
+            'leg-front-left': {'x': 0, 'y': 0, 'z': 0},
+            'leg-front-right': {'x': 0, 'y': 0, 'z': 0},
+            'ear-left': {'x': 0, 'y': 0, 'z': 0},
+            'ear-right': {'x': 0, 'y': 0, 'z': 0},
+        }
+
+        this.bodyLocation = [0, 0, 0]
 
         this.createTree()
+        this.translateModel(1, 1, 1)
         this.updateAnimation();
         this.updateTransform();
     }
@@ -124,12 +145,12 @@ export class Bat {
         for (var k in this.skeletons) skeletonNodes[k] = new Node(matIdentityMat(), this.jointPoints[k], this.centers[k], this.skeletons[k], indicesCube, this.colors[k], this.normals[k], this.textures[k], this.textureCoords[k], null, null, k);
 
         this.root = skeletonNodes['body'];
-        this.root.left = skeletonNodes['Wing1'];
-        this.root.left.left = skeletonNodes['Wing2'];
-        this.root.left.right = skeletonNodes['leg-front-left'] 
-        this.root.left.right.right = skeletonNodes['leg-front-right']
-        this.root.left.right.right.right = skeletonNodes['ear-left'] 
-        this.root.left.right.right.right.right = skeletonNodes['ear-right'] 
+        this.root.left = skeletonNodes['Wing2'];
+        this.root.left.right = skeletonNodes['Wing1'];
+        this.root.left.right.right = skeletonNodes['leg-front-left'] 
+        this.root.left.right.right.right = skeletonNodes['leg-front-right'] 
+        this.root.left.right.right.right.right = skeletonNodes['ear-left'] 
+        this.root.left.right.right.right.right.right = skeletonNodes['ear-right'] 
     }
 
     updateTransform(node=this.root) {
@@ -153,12 +174,38 @@ export class Bat {
         }
     }
 
+    distributeRotation(val) {
+        this.rotations['body'] = val
+        this.rotations['Wing2'] = val
+        this.rotations['Wing1'] = -val
+        this.rotations['leg-front-left'] = val
+        this.rotations['leg-front-right'] = -val
+        this.rotations['ear-left'] = val
+        this.rotations['ear-right'] = -val
+    }
+
+    translateModel() {
+        this.root.transform = matmul(matIdentityMat(), translateMat(this.bodyLocation[0], this.bodyLocation[1], this.bodyLocation[2]))
+    }
+
+    rotateModel() {
+        this.root.transform = matmul(matIdentityMat(), rotateMat(this.inRotation['body']['x'], this.inRotation['body']['y'], this.inRotation['body']['z'], 0, 0, 0))
+        this.root.transform = matmul(this.root.transform, translateMat(this.bodyLocation[0], this.bodyLocation[1], this.bodyLocation[2]))
+        
+        this.root.left.baseTransform = rotateMat(this.inRotation['Wing2']['x'], this.inRotation['Wing2']['y'], this.inRotation['Wing2']['z'], this.root.left.jointPoint[0]+this.bodyLocation[0], this.root.left.jointPoint[1]+this.bodyLocation[1], this.root.left.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.left.baseTransform = rotateMat(this.inRotation['Wing1']['x'], this.inRotation['Wing1']['y'], this.inRotation['Wing1']['z'], this.root.left.left.jointPoint[0]+this.bodyLocation[0], this.root.left.left.jointPoint[1]+this.bodyLocation[1], this.root.left.left.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.baseTransform = rotateMat(this.inRotation['leg-front-left']['x'], this.inRotation['leg-front-left']['y'], this.inRotation['leg-front-left']['z'], this.root.left.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.baseTransform = rotateMat(this.inRotation['leg-front-right']['x'], this.inRotation['leg-front-right']['y'], this.inRotation['leg-front-right']['z'], this.root.left.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.right.baseTransform = rotateMat(this.inRotation['ear-left']['x'], this.inRotation['ear-left']['y'], this.inRotation['ear-left']['z'], this.root.left.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.right.right.baseTransform = rotateMat(this.inRotation['ear-right']['x'], this.inRotation['ear-right']['y'], this.inRotation['ear-right']['z'], this.root.left.right.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.right.jointPoint[2]+this.bodyLocation[2])
+    }
+
     updateAnimation() {
-        this.root.transform = rotateMat(this.rotation, 0, 0, this.root.jointPoint[0], this.root.jointPoint[1], this.root.jointPoint[2]);
-        this.root.left.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.jointPoint[0], this.root.left.jointPoint[1], this.root.left.jointPoint[2])
-        this.root.left.right.baseTransform = rotateMat(-this.rotation, 0, 0, this.root.left.right.jointPoint[0], this.root.left.right.jointPoint[1], this.root.left.right.jointPoint[2])
-        this.root.left.right.right.baseTransform = rotateMat(-this.rotation, 0, 0, this.root.left.right.right.jointPoint[0], this.root.left.right.right.jointPoint[1], this.root.left.right.right.jointPoint[2])
-        this.root.left.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.jointPoint[0], this.root.left.right.right.right.jointPoint[1], this.root.left.right.right.right.jointPoint[2])
-        this.root.left.right.right.right.right.baseTransform = rotateMat(this.rotation, 0, 0, this.root.left.right.right.right.right.jointPoint[0], this.root.left.right.right.right.right.jointPoint[1], this.root.left.right.right.right.right.jointPoint[2])
+        this.root.baseTransform = rotateMat(this.rotations['body'], 0, 0, this.root.jointPoint[0]+this.bodyLocation[0], this.root.jointPoint[1]+this.bodyLocation[1], this.root.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.baseTransform = rotateMat( 0,this.rotations['Wing2'], 0, this.root.left.jointPoint[0]+this.bodyLocation[0], this.root.left.jointPoint[1]+this.bodyLocation[1], this.root.left.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.baseTransform = rotateMat( 0,this.rotations['Wing1'], 0, this.root.left.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.baseTransform = rotateMat(this.rotations['leg-front-left'], 0, 0, this.root.left.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.jointPoint[2]+this.bodyLocation[2])
+        this.root.left.right.right.right.baseTransform = rotateMat(this.rotations['leg-front-right'], 0, 0, this.root.left.right.right.right.jointPoint[0]+this.bodyLocation[0], this.root.left.right.right.right.jointPoint[1]+this.bodyLocation[1], this.root.left.right.right.right.jointPoint[2]+this.bodyLocation[2])
+        
     }
 }
