@@ -365,7 +365,7 @@ function events(master) {
     giraffeTranslation['x'].oninput = function() {
         const val = parseInt(giraffeTranslation['x'].value)
         master.giraffe.bodyLocation[0] = val
-        master.giraffe.translateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master);
     }
@@ -373,7 +373,7 @@ function events(master) {
     giraffeTranslation['y'].oninput = function() {
         const val = parseInt(giraffeTranslation['y'].value)
         master.giraffe.bodyLocation[1] = val
-        master.giraffe.translateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master);
     }
@@ -381,7 +381,7 @@ function events(master) {
     giraffeTranslation['z'].oninput = function() {
         const val = parseInt(giraffeTranslation['z'].value)
         master.giraffe.bodyLocation[2] = val
-        master.giraffe.translateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master);
     }
@@ -389,7 +389,7 @@ function events(master) {
     giraffeBodyRotation['x'].oninput = function() {
         const val = parseInt(giraffeBodyRotation['x'].value)
         master.giraffe.inRotation['body']['x'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -397,7 +397,7 @@ function events(master) {
     giraffeBodyRotation['y'].oninput = function() {
         const val = parseInt(giraffeBodyRotation['y'].value)
         master.giraffe.inRotation['body']['y'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -405,7 +405,7 @@ function events(master) {
     giraffeBodyRotation['z'].oninput = function() {
         const val = parseInt(giraffeBodyRotation['z'].value)
         master.giraffe.inRotation['body']['z'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -413,7 +413,7 @@ function events(master) {
     giraffeNeckRotation['x'].oninput = function() {
         const val = parseInt(giraffeNeckRotation['x'].value)
         master.giraffe.inRotation['neck']['x'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -421,7 +421,7 @@ function events(master) {
     giraffeNeckRotation['y'].oninput = function() {
         const val = parseInt(giraffeNeckRotation['y'].value)
         master.giraffe.inRotation['neck']['y'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -429,7 +429,7 @@ function events(master) {
     giraffeNeckRotation['z'].oninput = function() {
         const val = parseInt(giraffeNeckRotation['z'].value)
         master.giraffe.inRotation['neck']['z'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -437,7 +437,7 @@ function events(master) {
     giraffeHeadRotation['x'].oninput = function() {
         const val = parseInt(giraffeHeadRotation['x'].value)
         master.giraffe.inRotation['head']['x'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -445,7 +445,7 @@ function events(master) {
     giraffeHeadRotation['y'].oninput = function() {
         const val = parseInt(giraffeHeadRotation['y'].value)
         master.giraffe.inRotation['head']['y'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -453,7 +453,7 @@ function events(master) {
     giraffeHeadRotation['z'].oninput = function() {
         const val = parseInt(giraffeHeadRotation['z'].value)
         master.giraffe.inRotation['head']['z'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -461,7 +461,7 @@ function events(master) {
     giraffeLegFrontLeftRotation['x'].oninput = function() {
         const val = parseInt(giraffeLegFrontLeftRotation['x'].value)
         master.giraffe.inRotation['leg-front-left']['x'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -469,7 +469,7 @@ function events(master) {
     giraffeLegFrontLeftRotation['y'].oninput = function() {
         const val = parseInt(giraffeLegFrontLeftRotation['y'].value)
         master.giraffe.inRotation['leg-front-left']['y'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -477,7 +477,7 @@ function events(master) {
     giraffeLegFrontLeftRotation['z'].oninput = function() {
         const val = parseInt(giraffeLegFrontLeftRotation['z'].value)
         master.giraffe.inRotation['leg-front-left']['z'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -485,7 +485,7 @@ function events(master) {
     giraffeLegFrontRightRotation['x'].oninput = function() {
         const val = parseInt(giraffeLegFrontRightRotation['x'].value)
         master.giraffe.inRotation['leg-front-right']['x'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -493,7 +493,7 @@ function events(master) {
     giraffeLegFrontRightRotation['y'].oninput = function() {
         const val = parseInt(giraffeLegFrontRightRotation['y'].value)
         master.giraffe.inRotation['leg-front-right']['y'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -501,7 +501,7 @@ function events(master) {
     giraffeLegFrontRightRotation['z'].oninput = function() {
         const val = parseInt(giraffeLegFrontRightRotation['z'].value)
         master.giraffe.inRotation['leg-front-right']['z'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -509,7 +509,7 @@ function events(master) {
     giraffeLegBackLeftRotation['x'].oninput = function() {
         const val = parseInt(giraffeLegBackLeftRotation['x'].value)
         master.giraffe.inRotation['leg-back-left']['x'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -517,7 +517,7 @@ function events(master) {
     giraffeLegBackLeftRotation['y'].oninput = function() {
         const val = parseInt(giraffeLegBackLeftRotation['y'].value)
         master.giraffe.inRotation['leg-back-left']['y'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -525,7 +525,7 @@ function events(master) {
     giraffeLegBackLeftRotation['z'].oninput = function() {
         const val = parseInt(giraffeLegBackLeftRotation['z'].value)
         master.giraffe.inRotation['leg-back-left']['z'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -533,7 +533,7 @@ function events(master) {
     giraffeLegBackRightRotation['x'].oninput = function() {
         const val = parseInt(giraffeLegBackRightRotation['x'].value)
         master.giraffe.inRotation['leg-back-right']['x'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -541,7 +541,7 @@ function events(master) {
     giraffeLegBackRightRotation['y'].oninput = function() {
         const val = parseInt(giraffeLegBackRightRotation['y'].value)
         master.giraffe.inRotation['leg-back-right']['y'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -549,7 +549,7 @@ function events(master) {
     dogTranslation['x'].oninput = function() {
         const val = parseInt(dogTranslation['x'].value)
         master.dog.bodyLocation[0] = val
-        master.dog.translateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master);
     }
@@ -557,7 +557,7 @@ function events(master) {
     dogTranslation['y'].oninput = function() {
         const val = parseInt(dogTranslation['y'].value)
         master.dog.bodyLocation[1] = val
-        master.dog.translateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master);
     }
@@ -565,7 +565,7 @@ function events(master) {
     dogTranslation['z'].oninput = function() {
         const val = parseInt(dogTranslation['z'].value)
         master.dog.bodyLocation[2] = val
-        master.dog.translateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master);
     }
@@ -573,7 +573,7 @@ function events(master) {
     dogBodyRotation['x'].oninput = function() {
         const val = parseInt(dogBodyRotation['x'].value)
         master.dog.inRotation['body']['x'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -581,7 +581,7 @@ function events(master) {
     dogBodyRotation['y'].oninput = function() {
         const val = parseInt(dogBodyRotation['y'].value)
         master.dog.inRotation['body']['y'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -589,7 +589,7 @@ function events(master) {
     dogBodyRotation['z'].oninput = function() {
         const val = parseInt(dogBodyRotation['z'].value)
         master.dog.inRotation['body']['z'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -598,7 +598,7 @@ function events(master) {
     dogNeckRotation['x'].oninput = function() {
         const val = parseInt(dogNeckRotation['x'].value)
         master.dog.inRotation['neck']['x'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -606,7 +606,7 @@ function events(master) {
     dogNeckRotation['y'].oninput = function() {
         const val = parseInt(dogNeckRotation['y'].value)
         master.dog.inRotation['neck']['y'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -614,7 +614,7 @@ function events(master) {
     dogNeckRotation['z'].oninput = function() {
         const val = parseInt(dogNeckRotation['z'].value)
         master.dog.inRotation['neck']['z'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -622,7 +622,7 @@ function events(master) {
     dogHeadRotation['x'].oninput = function() {
         const val = parseInt(dogHeadRotation['x'].value)
         master.dog.inRotation['head']['x'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -630,7 +630,7 @@ function events(master) {
     dogHeadRotation['y'].oninput = function() {
         const val = parseInt(dogHeadRotation['y'].value)
         master.dog.inRotation['head']['y'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -638,7 +638,7 @@ function events(master) {
     dogHeadRotation['z'].oninput = function() {
         const val = parseInt(dogHeadRotation['z'].value)
         master.dog.inRotation['head']['z'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -646,7 +646,7 @@ function events(master) {
     dogLegFrontLeftRotation['x'].oninput = function() {
         const val = parseInt(dogLegFrontLeftRotation['x'].value)
         master.dog.inRotation['leg-front-left']['x'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -654,7 +654,7 @@ function events(master) {
     dogLegFrontLeftRotation['y'].oninput = function() {
         const val = parseInt(dogLegFrontLeftRotation['y'].value)
         master.dog.inRotation['leg-front-left']['y'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -662,7 +662,7 @@ function events(master) {
     dogLegFrontLeftRotation['z'].oninput = function() {
         const val = parseInt(dogLegFrontLeftRotation['z'].value)
         master.dog.inRotation['leg-front-left']['z'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -670,7 +670,7 @@ function events(master) {
     dogLegFrontRightRotation['x'].oninput = function() {
         const val = parseInt(dogLegFrontRightRotation['x'].value)
         master.dog.inRotation['leg-front-right']['x'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -678,7 +678,7 @@ function events(master) {
     dogLegFrontRightRotation['y'].oninput = function() {
         const val = parseInt(dogLegFrontRightRotation['y'].value)
         master.dog.inRotation['leg-front-right']['y'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -686,7 +686,7 @@ function events(master) {
     dogLegFrontRightRotation['z'].oninput = function() {
         const val = parseInt(dogLegFrontRightRotation['z'].value)
         master.dog.inRotation['leg-front-right']['z'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -694,7 +694,7 @@ function events(master) {
     dogLegBackLeftRotation['x'].oninput = function() {
         const val = parseInt(dogLegBackLeftRotation['x'].value)
         master.dog.inRotation['leg-back-left']['x'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -702,7 +702,7 @@ function events(master) {
     dogLegBackLeftRotation['y'].oninput = function() {
         const val = parseInt(dogLegBackLeftRotation['y'].value)
         master.dog.inRotation['leg-back-left']['y'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -710,7 +710,7 @@ function events(master) {
     dogLegBackLeftRotation['z'].oninput = function() {
         const val = parseInt(dogLegBackLeftRotation['z'].value)
         master.dog.inRotation['leg-back-left']['z'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -718,7 +718,7 @@ function events(master) {
     dogLegBackRightRotation['x'].oninput = function() {
         const val = parseInt(dogLegBackRightRotation['x'].value)
         master.dog.inRotation['leg-back-right']['x'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -726,7 +726,7 @@ function events(master) {
     dogLegBackRightRotation['y'].oninput = function() {
         const val = parseInt(dogLegBackRightRotation['y'].value)
         master.dog.inRotation['leg-back-right']['y'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -734,7 +734,7 @@ function events(master) {
     dogLegBackRightRotation['z'].oninput = function() {
         const val = parseInt(dogLegBackRightRotation['z'].value)
         master.dog.inRotation['leg-back-right']['z'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -742,7 +742,7 @@ function events(master) {
     dogLegBackRightRotation['z'].oninput = function() {
         const val = parseInt(giraffeLegBackRightRotation['z'].value)
         master.giraffe.inRotation['leg-back-right']['z'] = val
-        master.giraffe.rotateModel()
+        master.giraffe.transformModel()
         master.giraffe.updateTransform()
         render(master)
     }
@@ -750,7 +750,7 @@ function events(master) {
     dogTailRotation['x'].oninput = function() {
         const val = parseInt(dogTailRotation['x'].value)
         master.dog.inRotation['tail']['x'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -758,7 +758,7 @@ function events(master) {
     dogTailRotation['y'].oninput = function() {
         const val = parseInt(dogTailRotation['y'].value)
         master.dog.inRotation['tail']['y'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -766,7 +766,7 @@ function events(master) {
     dogTailRotation['z'].oninput = function() {
         const val = parseInt(dogTailRotation['z'].value)
         master.dog.inRotation['tail']['z'] = val
-        master.dog.rotateModel()
+        master.dog.transformModel()
         master.dog.updateTransform()
         render(master)
     }
@@ -774,7 +774,7 @@ function events(master) {
     batTranslation['x'].oninput = function() {
         const val = parseInt(batTranslation['x'].value)
         master.bat.bodyLocation[0] = val
-        master.bat.translateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master);
     }
@@ -782,7 +782,7 @@ function events(master) {
     batTranslation['y'].oninput = function() {
         const val = parseInt(batTranslation['y'].value)
         master.bat.bodyLocation[1] = val
-        master.bat.translateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master);
     }
@@ -790,7 +790,7 @@ function events(master) {
     batTranslation['z'].oninput = function() {
         const val = parseInt(batTranslation['z'].value)
         master.bat.bodyLocation[2] = val
-        master.bat.translateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master);
     }
@@ -798,7 +798,7 @@ function events(master) {
     batBodyRotation['x'].oninput = function() {
         const val = parseInt(batBodyRotation['x'].value)
         master.bat.inRotation['body']['x'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -806,7 +806,7 @@ function events(master) {
     batBodyRotation['y'].oninput = function() {
         const val = parseInt(batBodyRotation['y'].value)
         master.bat.inRotation['body']['y'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -814,7 +814,7 @@ function events(master) {
     batBodyRotation['z'].oninput = function() {
         const val = parseInt(batBodyRotation['z'].value)
         master.bat.inRotation['body']['y'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -822,7 +822,7 @@ function events(master) {
     batWing1Rotation['x'].oninput = function() {
         const val = parseInt(batWing1Rotation['x'].value)
         master.bat.inRotation['wing1']['x'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -830,7 +830,7 @@ function events(master) {
     batWing1Rotation['y'].oninput = function() {
         const val = parseInt(batWing1Rotation['y'].value)
         master.bat.inRotation['wing1']['y'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -838,7 +838,7 @@ function events(master) {
     batWing1Rotation['z'].oninput = function() {
         const val = parseInt(batWing1Rotation['z'].value)
         master.bat.inRotation['wing1']['z'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -846,7 +846,7 @@ function events(master) {
     batWing2Rotation['x'].oninput = function() {
         const val = parseInt(batWing2Rotation['x'].value)
         master.bat.inRotation['wing2']['x'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -854,7 +854,7 @@ function events(master) {
     batWing2Rotation['y'].oninput = function() {
         const val = parseInt(batWing2Rotation['y'].value)
         master.bat.inRotation['wing2']['y'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -862,7 +862,7 @@ function events(master) {
     batWing2Rotation['z'].oninput = function() {
         const val = parseInt(batWing2Rotation['z'].value)
         master.bat.inRotation['wing2']['z'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -870,7 +870,7 @@ function events(master) {
     batLegFrontLeftRotation['x'].oninput = function() {
         const val = parseInt(batLegFrontLeftRotation['x'].value)
         master.bat.inRotation['leg-front-left']['x'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -878,7 +878,7 @@ function events(master) {
     batLegFrontLeftRotation['y'].oninput = function() {
         const val = parseInt(batLegFrontLeftRotation['y'].value)
         master.bat.inRotation['leg-front-left']['y'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -886,7 +886,7 @@ function events(master) {
     batLegFrontLeftRotation['z'].oninput = function() {
         const val = parseInt(batLegFrontLeftRotation['z'].value)
         master.bat.inRotation['leg-front-left']['z'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -894,7 +894,7 @@ function events(master) {
     batLegFrontRightRotation['x'].oninput = function() {
         const val = parseInt(batLegFrontRightRotation['x'].value)
         master.bat.inRotation['leg-front-right']['x'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -902,7 +902,7 @@ function events(master) {
     batLegFrontRightRotation['y'].oninput = function() {
         const val = parseInt(batLegFrontRightRotation['y'].value)
         master.bat.inRotation['leg-front-right']['y'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -910,7 +910,7 @@ function events(master) {
     batLegFrontRightRotation['z'].oninput = function() {
         const val = parseInt(batLegFrontRightRotation['z'].value)
         master.bat.inRotation['leg-front-right']['z'] = val
-        master.bat.rotateModel()
+        master.bat.transformModel()
         master.bat.updateTransform()
         render(master)
     }
@@ -1012,7 +1012,6 @@ function events(master) {
                     markDown = false;
                 }
             }
-
             
             master.giraffe.distributeRotation(now)
             master.giraffe.updateAnimation();

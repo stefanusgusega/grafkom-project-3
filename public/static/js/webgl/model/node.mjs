@@ -9,6 +9,7 @@ export class Node {
         this.center = center;
         this.baseTransform = matIdentityMat();
         this.transform = transform;
+        this.defJointPoint = jointPoint;
         this.jointPoint = jointPoint;
         this.defVertices = vertices;
         this.render = {
