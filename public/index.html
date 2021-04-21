@@ -116,16 +116,6 @@
         }
     </script>
 
-    <script>
-        function help() {
-            var x = document.getElementById("helpText");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-    </script>
     <script type="module" src="static/js/script.js"></script>
     <title>Document</title>
 </head>
@@ -157,6 +147,10 @@
             <div>
                 <label>Camera Rotate Y</label>
                 <input type="range" min="-180" max="180" value="0" class="slider" id="cameraRotateY">
+            </div>
+            <div>
+                <label>Camera Rotate Z</label>
+                <input type="range" min="-180" max="180" value="0" class="slider" id="cameraRotateZ">
             </div>
 
             <div>
@@ -444,12 +438,6 @@
                 </div>
                 <input type="range" min="-20" max="20" value="0" class="slider" id="batRot">
                 <button type="button" id="batAnimate">animate</button>
-            </div>
-            <div>
-                <button onclick="help()">Help</button>
-                <textarea readonly id="helpText" style="display:none">
-Ini Help
-                </textarea>
             </div>
         </div>
         

@@ -126,6 +126,7 @@ function events(master) {
     const rotationCamera = {
         'x': document.getElementById('cameraRotateX'),
         'y': document.getElementById('cameraRotateY'),
+        'z': document.getElementById('cameraRotateZ')
     }
     const giraffeTranslation = {
         'x': document.getElementById('gTx'),
@@ -320,6 +321,12 @@ function events(master) {
 
     rotationCamera['y'].oninput = function() {
         master.cameraRotation[1] = parseInt(rotationCamera['y'].value);
+        updateWorld(master);
+        render(master);
+    };
+
+    rotationCamera['z'].oninput = function() {
+        master.cameraRotation[2] = parseInt(rotationCamera['z'].value);
         updateWorld(master);
         render(master);
     };
