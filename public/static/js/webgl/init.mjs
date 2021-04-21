@@ -594,6 +594,21 @@ function events(master) {
         master.giraffe.updateTransform()
         render(master)
     }
+    giraffeLegBackRightRotation['x'].oninput = function() {
+        const val = parseInt(giraffeLegBackRightRotation['x'].value)
+        master.giraffe.inRotation['leg-back-right']['x'] = val
+        master.giraffe.transformModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
+
+    giraffeLegBackRightRotation['z'].oninput = function() {
+        const val = parseInt(giraffeLegBackRightRotation['z'].value)
+        master.giraffe.inRotation['leg-back-right']['z'] = val
+        master.giraffe.transformModel()
+        master.giraffe.updateTransform()
+        render(master)
+    }
 
     giraffeFeetFrontLeftRotation['x'].oninput = function() {
         const val = parseInt(giraffeFeetFrontLeftRotation['x'].value)
