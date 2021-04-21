@@ -26,7 +26,6 @@ export function init(master) {
     var vs = document.getElementById('shaderVs').innerHTML;
     var fs = document.getElementById('shaderFs').innerHTML;
 
-
     if (!initShaders(master.gl, vs, fs)) {
         console.log('Failed to intialize shaders.');
         return;
@@ -45,6 +44,7 @@ export function init(master) {
     master.matNormLocation = master.gl.getUniformLocation(master.gl.program, 'mNorm');
     master.mappingMode = master.gl.getUniformLocation(master.gl.program, 'mode');
     master.shadeMode = master.gl.getUniformLocation(master.gl.program, 'stateShade');
+    master.textureMode = master.gl.getUniformLocation(master.gl.program, 'stateTexture');
     master.matNormalBumpLocation = master.gl.getUniformLocation(master.gl.program, 'normalMatrix');
     master.matUSamplerLocation = master.gl.getUniformLocation(master.gl.program, 'uSampler');
     master.matUSamplerCubeLocation = master.gl.getUniformLocation(master.gl.program, 'uSamplerCube');
@@ -60,10 +60,17 @@ export function init(master) {
     ])
 
     const value_shadeButton = document.getElementById('shade').value;
+    const value_textureButton = document.getElementById('texture').value;
     if (value_shadeButton == "On") {
         master.gl.uniform1i(master.shadeMode, 1);  
     } else {
         master.gl.uniform1i(master.shadeMode, 0);  
+    }
+
+    if (value_textureButton == 'On') {
+        master.gl.uniform1i(master.shadeMode, 1);
+    } else {
+        master.gl.uniform1i(master.shadeMode, 0);
     }
 
     master.gl.uniformMatrix4fv(master.matWorldUniformLocation, false, master.worldMatrix);
@@ -303,7 +310,8 @@ function events(master) {
     const orthoButton = document.getElementById('ortho');
     const obliqueButton = document.getElementById('oblique');
     const perspectiveButton = document.getElementById('perspective');
-    const shadeButoon = document.getElementById('shade');
+    const shadeButton = document.getElementById('shade');
+    const textureButton = document.getElementById('texture')
 
     const giraffeButton = document.getElementById('giraffeAnimate');
     const dogButton = document.getElementById('dogAnimate')
@@ -1116,14 +1124,26 @@ function events(master) {
         render(master);
     }
     
-    shadeButoon.addEventListener("click", function(){
-        const value_shadeButton = document.getElementById('shade').value;
-        if(value_shadeButton == "On"){
+    shadeButton.addEventListener("click", function(){
+        const val = document.getElementById('shade').value;
+        if(val == "On"){
             document.getElementById("shade").value="Off";
             master.gl.uniform1i(master.gl.getUniformLocation(master.gl.program,"stateShade"), 0);  
-        }else{
+        } else {
             document.getElementById("shade").value="On";
             master.gl.uniform1i(master.gl.getUniformLocation(master.gl.program,"stateShade"), 1);  
+        }
+        render(master)
+    });
+
+    textureButton.addEventListener("click", function(){
+        const val = document.getElementById('shade').value;
+        if(val == "On"){
+            document.getElementById("shade").value="Off";
+            master.gl.uniform1i(master.gl.getUniformLocation(master.gl.program,"textureOn"), 0);  
+        } else {
+            document.getElementById("shade").value="On";
+            master.gl.uniform1i(master.gl.getUniformLocation(master.gl.program,"textureOn"), 1);  
         }
         render(master)
     });

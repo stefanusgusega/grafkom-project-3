@@ -23,6 +23,7 @@ export class GiraffesRenderer {
 
         this.master.gl.uniform1i(this.master.mappingMode, 0);
         const vertex = this.master.gl.createBuffer();
+        var color = this.master.gl.createBuffer();
         const textureCoord = this.master.gl.createBuffer();
         const normal = this.master.gl.createBuffer();
         const tangent = this.master.gl.createBuffer();
@@ -33,6 +34,11 @@ export class GiraffesRenderer {
         this.master.gl.bufferData(this.master.gl.ARRAY_BUFFER, node.render['vertices'], this.master.gl.STATIC_DRAW);
         this.master.gl.vertexAttribPointer(this.master.vPosition, 3, this.master.gl.FLOAT, false, 0, 0);
         this.master.gl.enableVertexAttribArray(this.master.vPosition);
+
+        this.master.gl.bindBuffer(this.master.gl.ARRAY_BUFFER, color)
+        this.master.gl.bufferData(this.master.gl.ARRAY_BUFFER, node.render['color'], this.master.gl.STATIC_DRAW);
+        this.master.gl.vertexAttribPointer(this.master.vColor, 3, this.master.gl.FLOAT, false, 0, 0);
+        this.master.gl.enableVertexAttribArray(this.master.vColor);
         
         this.master.gl.bindBuffer(this.master.gl.ARRAY_BUFFER, textureCoord)
         this.master.gl.bufferData(this.master.gl.ARRAY_BUFFER, node.render['textureCoord'], this.master.gl.STATIC_DRAW);
